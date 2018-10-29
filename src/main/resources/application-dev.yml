@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/article_db?useSSL=false
+    username: root
+    password: root
+
+### 系统参数配置 ###
+article:
+  appid: wxfa3012c3a5846e0c
+  secret: 0d0d106b6b1ecec92ee8b43f436b16aa    
