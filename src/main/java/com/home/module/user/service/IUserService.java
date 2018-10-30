@@ -1,4 +1,4 @@
-package com.home.module.service;
+package com.home.module.user.service;
 
 import java.util.List;
 

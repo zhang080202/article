@@ -1,4 +1,4 @@
-package com.home.module.controller;
+package com.home.module.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.home.model.ResponseBean;
 import com.home.model.UserModel;
-import com.home.module.service.IUserService;
+import com.home.module.user.service.IUserService;
 
 @RestController
 @RequestMapping("/user")

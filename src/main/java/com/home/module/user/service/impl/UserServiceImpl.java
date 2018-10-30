@@ -1,4 +1,4 @@
-package com.home.module.service.impl;
+package com.home.module.user.service.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -13,8 +13,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.home.common.utils.HttpUtil;
 import com.home.configuration.ArticleConfiguration;
 import com.home.model.UserModel;
-import com.home.module.mapper.UserMapper;
-import com.home.module.service.IUserService;
+import com.home.module.user.mapper.UserMapper;
+import com.home.module.user.service.IUserService;
 
 @Service("testServiceImpl")
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserModel> implements IUserService {

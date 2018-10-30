@@ -1,4 +1,4 @@
-package com.home.module.mapper;
+package com.home.module.user.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
