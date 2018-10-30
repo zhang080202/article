@@ -2,6 +2,9 @@ spring:
   profiles:
     active:
     - dev
+  jackson:
+    date-format: yyyy-MM-dd  
 server:
   servlet:
-    context-path: /article      
+    context-path: /article
+          

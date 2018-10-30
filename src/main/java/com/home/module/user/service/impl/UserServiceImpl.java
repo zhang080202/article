@@ -63,7 +63,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserModel> implemen
 
 			baseMapper.updateById(user);
 		}
+		user.setSessionKey(null);
 		return user;
+	}
+
+	@Override
+	public UserModel queryUser(String userId) {
+		return baseMapper.selectById(userId);
 	}
 
 }

@@ -4,7 +4,7 @@ public class ResponseBean {
 
 	private static final Integer	SUCC_CODE	= 200;
 
-	private static final Integer	ERROR_CODE	= 200;
+	private static final Integer	ERROR_CODE	= 500;
 
 	private String					msg;
 

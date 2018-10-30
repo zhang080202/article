@@ -20,11 +20,8 @@ public class UserModel {
 	private String	city;
 
 	private String	province;
-
-	private Integer	job;
-
-	@Email
-	private String	email;
+	
+	private String phone;
 
 	private Date	birthday;
 
@@ -35,6 +32,15 @@ public class UserModel {
 	private Integer	loginNum;
 
 	private String	remark;
+	
+	
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
 	public String getCity() {
 		return city;
@@ -76,14 +82,6 @@ public class UserModel {
 		this.loginNum = loginNum;
 	}
 
-	public Integer getJob() {
-		return job;
-	}
-
-	public void setJob(Integer job) {
-		this.job = job;
-	}
-
 	public Date getBirthday() {
 		return birthday;
 	}
@@ -114,14 +112,6 @@ public class UserModel {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public String getUserId() {

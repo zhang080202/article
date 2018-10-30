@@ -10,4 +10,6 @@ public interface IUserService extends IService<UserModel> {
 	public List<UserModel> queryUser();
 
 	public UserModel userLogin(String code, String userInfo);
+
+	public UserModel queryUser(String userId);
 }
