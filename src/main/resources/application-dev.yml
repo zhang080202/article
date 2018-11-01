@@ -1,10 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-#    url: jdbc:mysql://localhost:3306/article_db?useSSL=false
-    url: jdbc:mysql://localhost:3306/test?useSSL=false
+    url: jdbc:mysql://112.74.179.143:3306/article_db?useUnicode=true&useSSL=false&characterEncoding=utf8
     username: root
-    password: root
+    password: Abc123=!
 
 ### 系统参数配置 ###
 article:
