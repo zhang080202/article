@@ -1,5 +1,7 @@
 package com.home.module.log.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.home.model.SysLog;
 
@@ -11,6 +13,7 @@ import com.home.model.SysLog;
  * @author jobob
  * @since 2018-11-01
  */
+@Mapper
 public interface SysLogMapper extends BaseMapper<SysLog> {
 
 }

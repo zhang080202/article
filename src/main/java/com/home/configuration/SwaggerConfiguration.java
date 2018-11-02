@@ -19,13 +19,13 @@ public class SwaggerConfiguration {
 		return new Docket(DocumentationType.SWAGGER_2)// 文档类型：DocumentationType.SWAGGER_2
 				.apiInfo(apiInfo())// api信息
 				.select()// 构建api选择器
-				.apis(RequestHandlerSelectors.basePackage("com.yyh.controller"))// api选择器选择api的包
+				.apis(RequestHandlerSelectors.basePackage("com.home.module"))// api选择器选择api的包
 				.paths(PathSelectors.any())// api选择器选择包路径下任何api显示在文档中
 				.build();// 创建文档
 	}
 
 	private ApiInfo apiInfo() {// 接口的相关信息
-		return new ApiInfoBuilder().title("Spring Boot中使用Swagger2构建RESTful接口")
+		return new ApiInfoBuilder().title("微信小程序 文章分享")
 								   .description("文章管理")
 								   .version("1.0")
 								   .build();

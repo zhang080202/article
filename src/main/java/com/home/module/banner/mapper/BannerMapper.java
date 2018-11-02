@@ -1,5 +1,7 @@
 package com.home.module.banner.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.home.model.Banner;
 
@@ -11,6 +13,7 @@ import com.home.model.Banner;
  * @author jobob
  * @since 2018-11-01
  */
+@Mapper
 public interface BannerMapper extends BaseMapper<Banner> {
 
 }

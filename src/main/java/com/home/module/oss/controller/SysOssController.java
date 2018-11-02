@@ -15,6 +15,9 @@ import com.aliyun.oss.model.PutObjectResult;
 import com.home.configuration.ArticleConfiguration;
 import com.home.model.ResponseBean;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 /**
  * 阿里云OSS对象服务接口
  * @author zhangyf
@@ -22,6 +25,7 @@ import com.home.model.ResponseBean;
  */
 @RestController
 @RequestMapping("/oss")
+@Api(tags = "阿里云OSS对象储存服务接口")
 public class SysOssController {
 	
 	private static Logger logger = LoggerFactory.getLogger(SysOssController.class);
@@ -30,6 +34,7 @@ public class SysOssController {
 	private ArticleConfiguration config;
 	
 	@GetMapping("/v1/uploadFile")
+	@ApiOperation("文件上传接口")
 	public ResponseBean uploadFile(@RequestParam("file") MultipartFile file) {
 		String endpoint = config.getEndpoint();
 		String accessKeyId = config.getAccessKeyId();
