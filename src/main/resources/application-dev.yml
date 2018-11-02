@@ -1,12 +1,15 @@
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/article_db?useSSL=false
-#    url: jdbc:mysql://localhost:3306/test?useSSL=false
+    url: jdbc:mysql://112.74.179.143:3306/article_db?useUnicode=true&useSSL=false&characterEncoding=utf8
     username: root
-    password: root
+    password: Abc123=!
 
 ### 系统参数配置 ###
 article:
   appid: wxfa3012c3a5846e0c
-  secret: 0d0d106b6b1ecec92ee8b43f436b16aa    
+  secret: 0d0d106b6b1ecec92ee8b43f436b16aa 
+  AccessKeyId: LTAIsWtUWWrnS4ly
+  AccessKeySecret: SAR5AnKKf20JtOluvQfA4NzLMlfVhs 
+  endpoint: oss-cn-beijing.aliyuncs.com  
+  bucketName: articleshare

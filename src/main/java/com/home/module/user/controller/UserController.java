@@ -13,8 +13,12 @@ import com.home.model.ResponseBean;
 import com.home.model.UserModel;
 import com.home.module.user.service.IUserService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/user")
+@Api(tags = "用户信息相关接口")
 public class UserController {
 
 	@Autowired
