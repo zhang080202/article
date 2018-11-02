@@ -11,5 +11,5 @@ article:
   secret: 0d0d106b6b1ecec92ee8b43f436b16aa 
   AccessKeyId: LTAIsWtUWWrnS4ly
   AccessKeySecret: SAR5AnKKf20JtOluvQfA4NzLMlfVhs 
-  endpoint: oss-cn-shenzhen.aliyuncs.com  
-  bucketName: test1112d
+  endpoint: oss-cn-beijing.aliyuncs.com  
+  bucketName: articleshare
