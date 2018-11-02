@@ -23,7 +23,7 @@ public class Banner implements Serializable {
      * ID
      */
     @TableId
-    private Long bannerId;
+    private String bannerId;
 
     /**
      * 地址
@@ -42,11 +42,11 @@ public class Banner implements Serializable {
 
     private String createUser;
 
-	public Long getBannerId() {
+	public String getBannerId() {
 		return bannerId;
 	}
 
-	public void setBannerId(Long bannerId) {
+	public void setBannerId(String bannerId) {
 		this.bannerId = bannerId;
 	}
 

@@ -20,7 +20,7 @@ public class Suggestion implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@TableId
-	private Long suggestionId;
+	private String suggestionId;
 
 	/**
 	 * 标题
@@ -47,11 +47,11 @@ public class Suggestion implements Serializable {
 	 */
 	private String image;
 
-	public Long getSuggestionId() {
+	public String getSuggestionId() {
 		return suggestionId;
 	}
 
-	public void setSuggestionId(Long suggestionId) {
+	public void setSuggestionId(String suggestionId) {
 		this.suggestionId = suggestionId;
 	}
 

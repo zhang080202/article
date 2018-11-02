@@ -1,6 +1,9 @@
 package com.home.module.oss.controller;
 
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,9 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.PutObjectResult;
 import com.home.configuration.ArticleConfiguration;
 import com.home.model.ResponseBean;
+import com.home.model.SysOss;
+import com.home.module.banner.service.IBannerService;
+import com.home.module.oss.service.ISysOssService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +39,8 @@ public class SysOssController {
 	
 	@Autowired
 	private ArticleConfiguration config;
+	@Autowired
+	private ISysOssService sysOssService;
 	
 	@PostMapping("/v1/uploadFile")
 	@ApiOperation("文件上传接口")
@@ -50,6 +58,8 @@ public class SysOssController {
 		try {
 			ossClient.putObject(bucketName, filename, file.getInputStream());
 			url = "https://" + bucketName + "." + endpoint + "/" + filename;
+			
+			sysOssService.saveSysOss(url);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("阿里云OSS 文件上传失败 Caused by " + e);

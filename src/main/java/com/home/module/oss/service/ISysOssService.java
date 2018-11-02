@@ -13,4 +13,6 @@ import com.home.model.SysOss;
  */
 public interface ISysOssService extends IService<SysOss> {
 
+	void saveSysOss(String url);
+
 }

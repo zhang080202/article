@@ -1,5 +1,8 @@
 package com.home.module.banner.mapper;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -15,5 +18,7 @@ import com.home.model.Banner;
  */
 @Mapper
 public interface BannerMapper extends BaseMapper<Banner> {
+
+	List<Map<String, Object>> getBannerList();
 
 }
