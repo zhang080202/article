@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.home.common.utils.OssUtil;
 import com.home.model.Banner;
 import com.home.module.banner.mapper.BannerMapper;
 import com.home.module.banner.service.IBannerService;
@@ -46,6 +47,13 @@ public class BannerServiceImpl extends ServiceImpl<BannerMapper, Banner> impleme
 
 	@Override
 	public List<Map<String, Object>> getBannerList() {
+		List<Map<String, Object>> list = bannerMapper.getBannerList();
+		for (Map<String, Object> map : list) {
+			String url = map.get("url").toString();
+			OssUtil ossUtil = new OssUtil();
+			String authAccess = ossUtil.authAccess(url);
+			map.put("url", authAccess);
+		}
 		return bannerMapper.getBannerList();
 	}
 	

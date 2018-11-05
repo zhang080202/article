@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.PutObjectResult;
+import com.home.common.utils.OssUtil;
 import com.home.configuration.ArticleConfiguration;
 import com.home.model.ResponseBean;
 import com.home.model.SysOss;
@@ -45,29 +46,15 @@ public class SysOssController {
 	@PostMapping("/v1/uploadFile")
 	@ApiOperation("文件上传接口")
 	public ResponseBean uploadFile(@RequestParam("file") MultipartFile file) {
-		String endpoint = config.getEndpoint();
-		String accessKeyId = config.getAccessKeyId();
-		String accessKeySecret = config.getAccessKeySecret();
-		String bucketName = config.getBucketName();
-		String filename = file.getOriginalFilename();//.substring(0, file.getOriginalFilename().lastIndexOf("."));
-		
-		// 创建OSSClient实例。
-		OSSClient ossClient = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-		//上传文件
 		String url = "";
 		try {
-			ossClient.putObject(bucketName, filename, file.getInputStream());
-			url = "https://" + bucketName + "." + endpoint + "/" + filename;
-			
+			url = new OssUtil().uploadFile(file);
 			sysOssService.saveSysOss(url);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("阿里云OSS 文件上传失败 Caused by " + e);
 			return ResponseBean.fail("阿里云OSS 文件上传失败 Caused by " + e);
-		} finally {
-			// 关闭OSSClient。
-			ossClient.shutdown();
-		}
+		} 
 		return ResponseBean.succ(url);
 	}
 
