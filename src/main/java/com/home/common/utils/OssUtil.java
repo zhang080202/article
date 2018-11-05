@@ -65,7 +65,14 @@ public class OssUtil {
 		Date expiration = new Date(new Date().getTime() + 3600 * 1000);
 		// 生成以GET方法访问的签名URL，访客可以直接通过浏览器访问相关内容。
 		URL url = client.generatePresignedUrl(bucketName, filename, expiration);
+		shutdown();
 		return url.toString();
+	}
+	
+	public void shutdown() {
+		if (client != null) {
+			client.shutdown();
+		}
 	}
 	
 	public static void main(String[] args) {

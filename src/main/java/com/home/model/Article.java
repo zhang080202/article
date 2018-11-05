@@ -3,6 +3,7 @@ package com.home.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -38,6 +39,27 @@ public class Article implements Serializable {
 	private LocalDateTime createTime;
 
 	private String image;
+	
+	private Long readNum;
+	
+	@TableField(exist = false)
+	private String accessImage;
+	
+	public String getAccessImage() {
+		return accessImage;
+	}
+
+	public void setAccessImage(String accessImage) {
+		this.accessImage = accessImage;
+	}
+
+	public Long getReadNum() {
+		return readNum;
+	}
+
+	public void setReadNum(Long readNum) {
+		this.readNum = readNum;
+	}
 
 	public String getArticleId() {
 		return articleId;
