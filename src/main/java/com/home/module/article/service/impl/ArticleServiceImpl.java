@@ -46,10 +46,17 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 			if (StringUtils.isNotBlank(article.getImage())) {
 				SysOss oss = sysOssService.getById(article.getImage());
 				String authAccess = ossUtil.authAccess(oss.getOssUrl());
+				//列表查询不返回文章内容
+				article.setContent(null);
 				article.setAccessImage(authAccess);
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public Article getArticlerById(String articleId) {
+		return baseMapper.selectById(articleId);
 	}
 
 }

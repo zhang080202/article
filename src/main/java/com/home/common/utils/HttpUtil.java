@@ -25,8 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * * Http工具类，发送Http请求， Get请求请将参数放在url中 Post请求请将参数放在Map中 * * @author 程高伟 * @date
- * 2017年1月5日 下午6:03:50
+ * * Http工具类，发送Http请求， Get请求请将参数放在url中 Post请求请将参数放在Map中 * *
  */
 public class HttpUtil {
 	private static final Logger					log			= LoggerFactory.getLogger(HttpUtil.class);

@@ -11,6 +11,7 @@
     <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>E:\\log\\logback-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>/home/log/article/logback-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>90</maxHistory>
         </rollingPolicy>
         <encoder charset="UTF-8">

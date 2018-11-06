@@ -15,4 +15,6 @@ public interface IArticleService extends IService<Article> {
 
 	IPage<Article> getArticlerList(Integer page, Integer pageSize);
 
+	Article getArticlerById(String articleId);
+
 }
