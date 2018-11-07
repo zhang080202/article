@@ -32,15 +32,16 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/article")
 @Api(tags = "文章管理相关接口")
 public class ArticleController {
-	
-	private static Logger logger = LoggerFactory.getLogger(ArticleController.class);
+
+	private static Logger	logger	= LoggerFactory.getLogger(ArticleController.class);
 
 	@Autowired
-	private IArticleService articleService;
+	private IArticleService	articleService;
 
 	@GetMapping("/v1/getArticlerList/{page}/{pageSize}")
 	@ApiOperation("获取文章列表信息")
-	public ResponseBean getArticlerList(@PathVariable("page") Integer page, @PathVariable("pageSize") Integer pageSize) {
+	public ResponseBean getArticlerList(@PathVariable("page") Integer page,
+			@PathVariable("pageSize") Integer pageSize) {
 		IPage<Article> result = null;
 		try {
 			result = articleService.getArticlerList(page, pageSize);
@@ -51,7 +52,7 @@ public class ArticleController {
 		}
 		return ResponseBean.succ(result);
 	}
-	
+
 	@GetMapping("/v1/getArticlerById/{articleId}")
 	@ApiOperation("根据ID获取文章信息")
 	public ResponseBean getArticlerById(@PathVariable("articleId") String articleId) {
@@ -65,6 +66,5 @@ public class ArticleController {
 		}
 		return ResponseBean.succ(article);
 	}
-	
 
 }
