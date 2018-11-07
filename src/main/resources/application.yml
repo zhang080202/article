@@ -11,6 +11,11 @@ spring:
 server:
   servlet:
     context-path: /article
+  port: 443
+  ssl:
+    key-store: classpath:cert-1541510749761_www.feigly.top.pfx
+    key-store-password: fco0BFyj
+    key-store-type: PKCS12
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*.xml
   global-config:
