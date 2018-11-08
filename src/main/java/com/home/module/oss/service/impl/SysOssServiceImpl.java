@@ -2,6 +2,7 @@ package com.home.module.oss.service.impl;
 
 import java.time.LocalDateTime;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,14 +29,16 @@ public class SysOssServiceImpl extends ServiceImpl<SysOssMapper, SysOss> impleme
 	private IBannerService bannerService;
 
 	@Override
-	public void saveSysOss(String url) {
+	public void saveSysOss(String url, String flag) {
 		//保存sysoss表
 		SysOss oss = new SysOss();
 		oss.setOssUrl(url);
 		oss.setCreateTime(LocalDateTime.now());
 		this.save(oss);
-		//根据ID 将数据存入banner表中
-		bannerService.insertBanner(oss.getOssId());
+		if (StringUtils.isNotBlank(flag)) {
+			//根据ID 将数据存入banner表中
+			bannerService.insertBanner(oss.getOssId());
+		}
 	}
 
 }

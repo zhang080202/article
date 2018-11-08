@@ -17,4 +17,6 @@ public interface IArticleService extends IService<Article> {
 
 	Article getArticlerById(String articleId);
 
+	void saveArticle(Article article);
+
 }

@@ -31,8 +31,6 @@ public class SysOssController {
 	private static Logger			logger	= LoggerFactory.getLogger(SysOssController.class);
 
 	@Autowired
-	private ArticleConfiguration	config;
-	@Autowired
 	private ISysOssService			sysOssService;
 
 	@PostMapping("/v1/uploadFile")
@@ -41,7 +39,22 @@ public class SysOssController {
 		String url = "";
 		try {
 			url = new OssUtil().uploadFile(file);
-			sysOssService.saveSysOss(url);
+			sysOssService.saveSysOss(url, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("阿里云OSS 文件上传失败 Caused by " + e);
+			return ResponseBean.fail("阿里云OSS 文件上传失败 Caused by " + e);
+		}
+		return ResponseBean.succ(url);
+	}
+	
+	@PostMapping("/v1/uploadBanner")
+	@ApiOperation("文件上传接口")
+	public ResponseBean uploadBanner(@RequestParam("file") MultipartFile file) {
+		String url = "";
+		try {
+			url = new OssUtil().uploadFile(file);
+			sysOssService.saveSysOss(url, "banner");
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("阿里云OSS 文件上传失败 Caused by " + e);

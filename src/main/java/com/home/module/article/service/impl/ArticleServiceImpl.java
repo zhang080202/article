@@ -1,10 +1,12 @@
 package com.home.module.article.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -57,6 +59,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 	@Override
 	public Article getArticlerById(String articleId) {
 		return baseMapper.selectById(articleId);
+	}
+
+	@Override
+	@Transactional
+	public void saveArticle(Article article) {
+		article.setCreateTime(LocalDateTime.now());
+		baseMapper.insert(article);
 	}
 
 }
