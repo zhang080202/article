@@ -3,6 +3,7 @@ package com.home.module.oss.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,6 +62,19 @@ public class SysOssController {
 			return ResponseBean.fail("阿里云OSS 文件上传失败 Caused by " + e);
 		}
 		return ResponseBean.succ(url);
+	}
+	
+	@GetMapping("/v1/deleteImage")
+	@ApiOperation("删除图片")
+	public ResponseBean deleteImage(@RequestParam("filename") String filename) {
+		try {
+			new OssUtil().deleteImage(filename);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("阿里云OSS 文件删除失败 Caused by " + e);
+			return ResponseBean.fail("阿里云OSS 文件删除失败 Caused by " + e);
+		}
+		return ResponseBean.succ();
 	}
 
 }

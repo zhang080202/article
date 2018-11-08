@@ -69,6 +69,14 @@ public class OssUtil {
 		return url.toString();
 	}
 	
+	public void deleteImage(String filename) {
+		if (filename.contains("http")) {
+			//从数据库中查询出的url
+			filename = filename.substring(filename.lastIndexOf("/") + 1, filename.indexOf("?"));
+		}
+		client.deleteObject(bucketName, filename);
+	}
+	
 	public void shutdown() {
 		if (client != null) {
 			client.shutdown();
