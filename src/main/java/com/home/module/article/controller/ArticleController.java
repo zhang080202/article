@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.home.common.utils.ValidatorUtil;
 import com.home.model.Article;
 import com.home.model.ResponseBean;
 import com.home.module.article.service.IArticleService;
@@ -72,6 +73,13 @@ public class ArticleController {
 	@PostMapping("/v1/saveArticle")
 	@ApiOperation("保存文章")
 	public ResponseBean saveArticle(@RequestBody Article article) {
+		try {
+			ValidatorUtil.validatorModel(article);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("实体类验证失败  " + e);
+			return ResponseBean.fail(e.getMessage());
+		}
 		articleService.saveArticle(article);
 		return ResponseBean.succ();
 	}

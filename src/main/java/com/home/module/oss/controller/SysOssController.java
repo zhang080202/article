@@ -3,7 +3,8 @@ package com.home.module.oss.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.home.common.utils.OssUtil;
-import com.home.configuration.ArticleConfiguration;
 import com.home.model.ResponseBean;
+import com.home.model.SysOss;
 import com.home.module.oss.service.ISysOssService;
 
 import io.swagger.annotations.Api;
@@ -37,16 +38,16 @@ public class SysOssController {
 	@PostMapping("/v1/uploadFile")
 	@ApiOperation("文件上传接口")
 	public ResponseBean uploadFile(@RequestParam("file") MultipartFile file) {
-		String url = "";
+		SysOss oss = null;
 		try {
-			url = new OssUtil().uploadFile(file);
-			sysOssService.saveSysOss(url, null);
+			String url = new OssUtil().uploadFile(file);
+			oss = sysOssService.saveSysOss(url, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("阿里云OSS 文件上传失败 Caused by " + e);
 			return ResponseBean.fail("阿里云OSS 文件上传失败 Caused by " + e);
 		}
-		return ResponseBean.succ(url);
+		return ResponseBean.succ(oss);
 	}
 	
 	@PostMapping("/v1/uploadBanner")
@@ -64,11 +65,12 @@ public class SysOssController {
 		return ResponseBean.succ(url);
 	}
 	
-	@GetMapping("/v1/deleteImage")
+	@DeleteMapping("/v1/deleteImage/{ossId}")
 	@ApiOperation("删除图片")
-	public ResponseBean deleteImage(@RequestParam("filename") String filename) {
+	public ResponseBean deleteImage(@PathVariable("ossId") String ossId) {
 		try {
-			new OssUtil().deleteImage(filename);
+			SysOss oss = sysOssService.getById(ossId);
+			new OssUtil().deleteImage(oss.getOssUrl());
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("阿里云OSS 文件删除失败 Caused by " + e);

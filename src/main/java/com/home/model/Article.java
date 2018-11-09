@@ -3,6 +3,9 @@ package com.home.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -22,11 +25,14 @@ public class Article implements Serializable {
 
 	@TableId
 	private String articleId;
-
+	
+	@NotNull(message = "文章标题不能为空")
 	private Integer articleType;
-
+	
+	@NotBlank(message = "文章内容不能为空")
 	private String content;
-
+	
+	@NotBlank(message = "文章标题不能为空")
 	private String title;
 
 	/**
@@ -37,7 +43,8 @@ public class Article implements Serializable {
 	private String createUser;
 
 	private LocalDateTime createTime;
-
+	
+	@NotBlank(message = "标题图片不能为空")
 	private String image;
 	
 	private Long readNum;

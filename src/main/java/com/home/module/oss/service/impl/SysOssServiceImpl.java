@@ -29,7 +29,7 @@ public class SysOssServiceImpl extends ServiceImpl<SysOssMapper, SysOss> impleme
 	private IBannerService bannerService;
 
 	@Override
-	public void saveSysOss(String url, String flag) {
+	public SysOss saveSysOss(String url, String flag) {
 		//保存sysoss表
 		SysOss oss = new SysOss();
 		oss.setOssUrl(url);
@@ -39,6 +39,7 @@ public class SysOssServiceImpl extends ServiceImpl<SysOssMapper, SysOss> impleme
 			//根据ID 将数据存入banner表中
 			bannerService.insertBanner(oss.getOssId());
 		}
+		return oss;
 	}
 
 }

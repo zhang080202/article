@@ -1,6 +1,11 @@
 package com.home.common.utils;
 
+import java.util.Set;
 import java.util.regex.Pattern;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 
 public class ValidatorUtil {
     /**
@@ -42,6 +47,25 @@ public class ValidatorUtil {
      * 正则表达式：验证IP地址
      */
     public static final String REGEX_IP_ADDR = "(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)";
+    
+    /**
+     * hibernate 校验类
+     */
+    public static Validator validator;
+    
+    static {
+    	validator = Validation.buildDefaultValidatorFactory().getValidator();
+    }
+    
+    public static void validatorModel(Object obj) throws Exception {
+    	Set<ConstraintViolation<Object>> res = validator.validate(obj);
+    	if (res != null && !res.isEmpty()) {
+			for (ConstraintViolation<Object> c : res) {
+				throw new Exception(c.getMessage());
+			}
+		}
+    	
+    }
  
     /**
      * 校验用户名
