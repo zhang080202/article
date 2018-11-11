@@ -7,6 +7,9 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
+import com.home.common.enums.ServiceEnum;
+import com.home.common.exception.ServiceException;
+
 public class ValidatorUtil {
     /**
      * 正则表达式：验证用户名
@@ -57,11 +60,11 @@ public class ValidatorUtil {
     	validator = Validation.buildDefaultValidatorFactory().getValidator();
     }
     
-    public static void validatorModel(Object obj) throws Exception {
+    public static void validatorModel(Object obj) throws ServiceException {
     	Set<ConstraintViolation<Object>> res = validator.validate(obj);
     	if (res != null && !res.isEmpty()) {
 			for (ConstraintViolation<Object> c : res) {
-				throw new Exception(c.getMessage());
+				throw new ServiceException(ServiceEnum.CHECK_FAIL.getCode(), c.getMessage());
 			}
 		}
     	

@@ -13,7 +13,7 @@ import com.home.model.Article;
  */
 public interface IArticleService extends IService<Article> {
 
-	IPage<Article> getArticlerList(Integer page, Integer pageSize);
+	IPage<Article> getArticlerList(Integer page, Integer pageSize, Integer isPrivate, String userId);
 
 	Article getArticlerById(String articleId);
 

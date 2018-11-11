@@ -12,6 +12,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.home.common.enums.ServiceEnum;
+import com.home.common.exception.ServiceException;
 import com.home.common.utils.OssUtil;
 import com.home.model.Article;
 import com.home.model.SysOss;
@@ -38,9 +40,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 	private ISysOssService sysOssService;
 
 	@Override
-	public IPage<Article> getArticlerList(Integer page, Integer pageSize) {
+	public IPage<Article> getArticlerList(Integer page, Integer pageSize, Integer isPrivate, String userId) {
 		IPage<Article> result = baseMapper.selectPage(new Page<Article>(page, pageSize),
-				new QueryWrapper<Article>().orderByDesc("read_num"));
+				new QueryWrapper<Article>().eq("is_private", isPrivate)
+										   .eq(StringUtils.isNotBlank(userId), "create_user", userId).orderByDesc("read_num"));
 		//获取图片url 并授权
 		List<Article> list = result.getRecords();
 		OssUtil ossUtil = new OssUtil();
@@ -64,6 +67,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 	@Override
 	@Transactional
 	public void saveArticle(Article article) {
+		Article articleDB = baseMapper.selectOne(new QueryWrapper<Article>().eq("title", article.getTitle())
+																			.eq("content", article.getContent()));
+		if (articleDB != null) {
+			throw new ServiceException(ServiceEnum.BUSINESS_FAIL.getCode(), "请勿重复提交");
+		}
 		article.setCreateTime(LocalDateTime.now());
 		baseMapper.insert(article);
 	}

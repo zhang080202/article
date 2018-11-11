@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.home.common.enums.ServiceEnum;
+import com.home.common.exception.ServiceException;
 import com.home.common.utils.ValidatorUtil;
 import com.home.model.Article;
 import com.home.model.ResponseBean;
@@ -47,7 +49,23 @@ public class ArticleController {
 			@PathVariable("pageSize") Integer pageSize) {
 		IPage<Article> result = null;
 		try {
-			result = articleService.getArticlerList(page, pageSize);
+			result = articleService.getArticlerList(page, pageSize, 1, null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("获取文章列表信息接口异常 Caused by " + e);
+			return ResponseBean.fail("获取文章列表信息接口异常 Caused by " + e);
+		}
+		return ResponseBean.succ(result);
+	}
+
+	@GetMapping("/v1/getArticlerListByUser/{page}/{pageSize}/{isPrivate}/{user}")
+	@ApiOperation("获取用户的文章列表信息")
+	public ResponseBean getArticlerListByUser(@PathVariable("page") Integer page,
+			@PathVariable("pageSize") Integer pageSize, @PathVariable("isPrivate") Integer isPrivate,
+			@PathVariable("userId") String userId) {
+		IPage<Article> result = null;
+		try {
+			result = articleService.getArticlerList(page, pageSize, isPrivate, userId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("获取文章列表信息接口异常 Caused by " + e);
@@ -69,18 +87,22 @@ public class ArticleController {
 		}
 		return ResponseBean.succ(article);
 	}
-	
+
 	@PostMapping("/v1/saveArticle")
 	@ApiOperation("保存文章")
 	public ResponseBean saveArticle(@RequestBody Article article) {
 		try {
 			ValidatorUtil.validatorModel(article);
+			articleService.saveArticle(article);
+		} catch (ServiceException e) {
+			e.printStackTrace();
+			logger.error("保存文章数据错误  + " + e.toString());
+			return ResponseBean.fail(e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("实体类验证失败  " + e);
-			return ResponseBean.fail(e.getMessage());
+			logger.error("保存文章接口异常  + " + e.toString());
+			return ResponseBean.fail("网络异常，请稍后再试");
 		}
-		articleService.saveArticle(article);
 		return ResponseBean.succ();
 	}
 

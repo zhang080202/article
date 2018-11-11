@@ -44,11 +44,31 @@ public class Article implements Serializable {
 
 	private LocalDateTime createTime;
 	
+	private LocalDateTime passTime;
+	
 	@NotBlank(message = "标题图片不能为空")
 	private String image;
 	
 	private Long readNum;
 	
+	private Boolean isPrivate;
+	
+	public LocalDateTime getPassTime() {
+		return passTime;
+	}
+
+	public void setPassTime(LocalDateTime passTime) {
+		this.passTime = passTime;
+	}
+
+	public Boolean getIsPrivate() {
+		return isPrivate;
+	}
+
+	public void setIsPrivate(Boolean isPrivate) {
+		this.isPrivate = isPrivate;
+	}
+
 	@TableField(exist = false)
 	private String accessImage;
 	
