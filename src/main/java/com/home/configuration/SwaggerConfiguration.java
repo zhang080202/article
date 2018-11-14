@@ -25,6 +25,11 @@ public class SwaggerConfiguration {
 	}
 
 	private ApiInfo apiInfo() {// 接口的相关信息
-		return new ApiInfoBuilder().title("微信小程序 文章分享").description("开发文档").version("1.0").build();
+		return new ApiInfoBuilder().title("微信小程序 文章分享")
+								   .description("开发文档")
+								   .version("1.0")
+								   .license("Apache 2.0")
+					               .licenseUrl("http://www.apache.org/licenses/LICENSE-2.0.html")
+					               .build();
 	}
 }
