@@ -51,7 +51,7 @@ public class ArticleController {
 			@PathVariable("pageSize") Integer pageSize) {
 		IPage<Article> result = null;
 		try {
-			result = articleService.getArticlerList(page, pageSize, 1, null);
+			result = articleService.getArticlerList(page, pageSize, 0, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("获取文章列表信息接口异常 Caused by " + e);

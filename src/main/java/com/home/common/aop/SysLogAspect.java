@@ -56,9 +56,10 @@ public class SysLogAspect {
 		Instant end = Instant.now();
 		Duration dr = Duration.between(start, end);
 		
-		syslog.setTime(dr.getSeconds() * 1000);
+		syslog.setUserId(result.toString());
+		syslog.setTime(dr.toMillis());
 		syslog.setCreateDate(LocalDateTime.now());
-		sysLogService.save(syslog);
+		sysLogService.saveLog(syslog);
 		return result;
 	}
 }

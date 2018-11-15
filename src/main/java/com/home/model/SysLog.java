@@ -18,12 +18,14 @@ import com.baomidou.mybatisplus.annotation.TableName;
 public class SysLog implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	
+	@TableId
+	private String logId;
 	/**
 	 * 用户名
 	 */
-	@TableId
-	private String username;
+	private String userId;
 
 	/**
 	 * 用户操作
@@ -55,12 +57,20 @@ public class SysLog implements Serializable {
 	 */
 	private LocalDateTime createDate;
 
-	public String getUsername() {
-		return username;
+	public String getLogId() {
+		return logId;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setLogId(String logId) {
+		this.logId = logId;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getOperation() {

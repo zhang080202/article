@@ -69,8 +69,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 	}
 
 	@Override
-	@Transactional
-	public void saveArticle(Article article) {
+	@opLog("保存文章")
+	public String saveArticle(Article article) {
 		Article articleDB = baseMapper.selectOne(new QueryWrapper<Article>().eq("title", article.getTitle())
 																			.eq("flag", 0)
 																			.eq("content", article.getContent()));
@@ -79,10 +79,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 		}
 		article.setCreateTime(LocalDateTime.now());
 		baseMapper.insert(article);
+		
+		return article.getCreateUser();
 	}
 
 	@Override
-	public void submitCheck(String articleId) {
+	@opLog("提交审核")
+	public String submitCheck(String articleId) {
 		Article article = baseMapper.selectById(articleId);
 		
 		if (article == null) {
@@ -104,11 +107,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 		article.setPassTime(LocalDateTime.now());
 		baseMapper.updateById(article);
 		
+		return article.getCreateUser();
 	}
 
 	@Override
 	@opLog("删除文章")
-	public void deleteArticle(String articleId, String userId) {
+	public String deleteArticle(String articleId, String userId) {
 		//检查是否越过权限
 		Article article = baseMapper.selectById(articleId);
 		if (!userId.equals(article.getCreateUser())) {
@@ -117,6 +121,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 		//逻辑删除
 		article.setFlag(1);
 		baseMapper.updateById(article);
+		return userId;
 	}
 
 }

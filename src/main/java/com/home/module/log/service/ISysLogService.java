@@ -13,4 +13,6 @@ import com.home.model.SysLog;
  */
 public interface ISysLogService extends IService<SysLog> {
 
+	void saveLog(SysLog syslog);
+
 }

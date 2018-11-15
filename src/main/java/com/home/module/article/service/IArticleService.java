@@ -17,10 +17,10 @@ public interface IArticleService extends IService<Article> {
 
 	Article getArticlerById(String articleId);
 
-	void saveArticle(Article article);
+	String saveArticle(Article article);
 
-	void submitCheck(String articleId);
+	String submitCheck(String articleId);
 
-	void deleteArticle(String articleId, String userId);
+	String deleteArticle(String articleId, String userId);
 
 }
