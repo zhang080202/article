@@ -36,15 +36,15 @@ public class Article implements Serializable {
 	private String title;
 
 	/**
-	 * 是否审核 0 未审核 1 已审核
+	 * 是否审核 0 未审核 1 审核中 2 已审核 3 未通过
 	 */
 	private Integer status;
 
 	private String createUser;
 
 	private LocalDateTime createTime;
-	
-	private LocalDateTime passTime;
+	//
+	private LocalDateTime passTime; //通过审核时间
 	
 	@NotBlank(message = "标题图片不能为空")
 	private String image;
@@ -52,7 +52,19 @@ public class Article implements Serializable {
 	private Long readNum;
 	
 	private Boolean isPrivate;
+	/**
+	 * 0 有效 1 无效
+	 */
+	private Integer flag;
 	
+	public Integer getFlag() {
+		return flag;
+	}
+
+	public void setFlag(Integer flag) {
+		this.flag = flag;
+	}
+
 	public LocalDateTime getPassTime() {
 		return passTime;
 	}

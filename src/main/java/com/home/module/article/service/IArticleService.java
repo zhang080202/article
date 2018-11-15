@@ -19,4 +19,8 @@ public interface IArticleService extends IService<Article> {
 
 	void saveArticle(Article article);
 
+	void submitCheck(String articleId);
+
+	void deleteArticle(String articleId, String userId);
+
 }

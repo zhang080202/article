@@ -3,11 +3,13 @@ package com.home.module.article.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -58,7 +60,7 @@ public class ArticleController {
 		return ResponseBean.succ(result);
 	}
 
-	@GetMapping("/v1/getArticlerListByUser/{page}/{pageSize}/{isPrivate}/{user}")
+	@GetMapping("/v1/getArticlerListByUser/{page}/{pageSize}/{isPrivate}/{userId}")
 	@ApiOperation("获取用户的文章列表信息")
 	public ResponseBean getArticlerListByUser(@PathVariable("page") Integer page,
 			@PathVariable("pageSize") Integer pageSize, @PathVariable("isPrivate") Integer isPrivate,
@@ -105,5 +107,32 @@ public class ArticleController {
 		}
 		return ResponseBean.succ();
 	}
-
+	
+	@GetMapping("/v1/submitCheck/{articleId}")
+	@ApiOperation("文章提交审核")
+	public ResponseBean submitCheck(@PathVariable("articleId") String articleId) {
+		try {
+			articleService.submitCheck(articleId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("文章提交审核接口异常 : " + e);
+			return ResponseBean.fail(e.getMessage());
+		}
+		return ResponseBean.succ();
+	}
+	
+	@DeleteMapping("/v1/deleteArticle/{articleId}/{userId}")
+	@ApiOperation("删除文章")
+	public ResponseBean deleteArticle(@PathVariable("articleId") String articleId, @PathVariable("userId") String userId) {
+		try {
+			articleService.deleteArticle(articleId, userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("删除文章接口异常 : " + e);
+			return ResponseBean.fail(e.getMessage());
+		}
+		return ResponseBean.succ();
+	}
+	
+	
 }
