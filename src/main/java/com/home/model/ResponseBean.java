@@ -5,6 +5,8 @@ public class ResponseBean {
 	private static final Integer	SUCC_CODE	= 200;
 
 	private static final Integer	ERROR_CODE	= 500;
+	
+	private static final String 	ERROR_MSG   = "网络异常，请稍后再试";
 
 	private String					msg;
 
@@ -56,7 +58,7 @@ public class ResponseBean {
 	}
 
 	public static ResponseBean fail() {
-		return ResponseBean.succ(null, ERROR_CODE, null);
+		return ResponseBean.succ(ERROR_MSG, ERROR_CODE, null);
 	}
 
 	public String getMsg() {

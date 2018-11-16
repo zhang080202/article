@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -75,6 +76,17 @@ public class SysOssController {
 			e.printStackTrace();
 			logger.error("阿里云OSS 文件删除失败 Caused by " + e);
 			return ResponseBean.fail("阿里云OSS 文件删除失败 Caused by " + e);
+		}
+		return ResponseBean.succ();
+	}
+	
+	@GetMapping("/v1/downloadFile")
+	@ApiOperation("文件下载")
+	public ResponseBean downloadFile() {
+		try {
+			new OssUtil().downloadFile();
+		} catch (Throwable e) {
+			e.printStackTrace();
 		}
 		return ResponseBean.succ();
 	}

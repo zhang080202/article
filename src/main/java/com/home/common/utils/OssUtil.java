@@ -6,6 +6,9 @@ import java.util.Date;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.DownloadFileRequest;
+import com.aliyun.oss.model.DownloadFileResult;
+import com.aliyun.oss.model.ObjectMetadata;
 
 /**
  * 阿里云OSS 工具类
@@ -83,10 +86,23 @@ public class OssUtil {
 		}
 	}
 	
-	public static void main(String[] args) {
-		String filename = "http://articleshare.oss-cn-beijing.aliyuncs.com/Sasa2.jpg?Expires=1541393740&OSSAccessKeyId=LTAIsWtUWWrnS4ly&Signature=va8LQclrrDGr3o2DKH5BIQNbWCU%3D";
-		filename = filename.substring(filename.lastIndexOf("/") + 1, filename.indexOf("?"));
-		System.out.println(filename);
+	public void downloadFile() throws Throwable {
+		// 下载请求，10个任务并发下载，启动断点续传。
+		DownloadFileRequest downloadFileRequest = new DownloadFileRequest(bucketName, "1057570712933412865.zip");
+		downloadFileRequest.setDownloadFile("E:\\test.zip");
+		downloadFileRequest.setPartSize(1 * 1024 * 1024);
+		downloadFileRequest.setTaskNum(10);
+		downloadFileRequest.setEnableCheckpoint(true);
+		downloadFileRequest.setCheckpointFile("uploadFile.ucp");
+
+		// 下载文件。
+		DownloadFileResult downloadRes = client.downloadFile(downloadFileRequest);
+		// 下载成功时，会返回文件元信息。
+		ObjectMetadata objectMetadata = downloadRes.getObjectMetadata();
+		
+		System.out.println(objectMetadata);
+		// 关闭OSSClient。
+		client.shutdown();
 	}
 	
 }

@@ -55,7 +55,7 @@ public class ArticleController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("获取文章列表信息接口异常 Caused by " + e);
-			return ResponseBean.fail("获取文章列表信息接口异常 Caused by " + e);
+			return ResponseBean.fail();
 		}
 		return ResponseBean.succ(result);
 	}
@@ -71,7 +71,7 @@ public class ArticleController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("获取文章列表信息接口异常 Caused by " + e);
-			return ResponseBean.fail("获取文章列表信息接口异常 Caused by " + e);
+			return ResponseBean.fail();
 		}
 		return ResponseBean.succ(result);
 	}
@@ -85,7 +85,23 @@ public class ArticleController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("根据ID获取文章信息 接口异常 Caused by " + e);
-			return ResponseBean.fail("根据ID获取文章信息 接口异常 Caused by " + e);
+			return ResponseBean.fail();
+		}
+		return ResponseBean.succ(article);
+	}
+	
+	@GetMapping("/v1/getArticleStatus/{articleId}")
+	@ApiOperation("根据ID获取文章状态")
+	public ResponseBean getArticleStatus(@PathVariable("articleId") String articleId) {
+		Article article = null;
+		try {
+			article = articleService.getArticlerById(articleId);
+			article.setContent(null);
+			article.setTitle(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("根据ID获取文章状态 接口异常 Caused by " + e);
+			return ResponseBean.fail();
 		}
 		return ResponseBean.succ(article);
 	}
@@ -103,7 +119,7 @@ public class ArticleController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("保存文章接口异常  + " + e.toString());
-			return ResponseBean.fail("网络异常，请稍后再试");
+			return ResponseBean.fail();
 		}
 		return ResponseBean.succ();
 	}

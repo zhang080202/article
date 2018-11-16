@@ -78,7 +78,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 			throw new ServiceException(ServiceEnum.BUSINESS_FAIL.getCode(), "请勿重复提交");
 		}
 		article.setCreateTime(LocalDateTime.now());
-		baseMapper.insert(article);
+		article.setStatus(0);
+		this.saveOrUpdate(article);
 		
 		return article.getCreateUser();
 	}
