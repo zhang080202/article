@@ -7,13 +7,12 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.home.common.enums.ServiceEnum;
 import com.home.common.exception.ServiceException;
 import com.home.common.utils.ValidatorUtil;
 import com.home.model.Article;
@@ -51,7 +50,7 @@ public class ArticleController {
 			@PathVariable("pageSize") Integer pageSize) {
 		IPage<Article> result = null;
 		try {
-			result = articleService.getArticlerList(page, pageSize, 0, null);
+			result = articleService.getArticlerList(page, pageSize, false, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("获取文章列表信息接口异常 Caused by " + e);
@@ -63,7 +62,7 @@ public class ArticleController {
 	@GetMapping("/v1/getArticlerListByUser/{page}/{pageSize}/{isPrivate}/{userId}")
 	@ApiOperation("获取用户的文章列表信息")
 	public ResponseBean getArticlerListByUser(@PathVariable("page") Integer page,
-			@PathVariable("pageSize") Integer pageSize, @PathVariable("isPrivate") Integer isPrivate,
+			@PathVariable("pageSize") Integer pageSize, @PathVariable("isPrivate") Boolean isPrivate,
 			@PathVariable("userId") String userId) {
 		IPage<Article> result = null;
 		try {
@@ -89,7 +88,7 @@ public class ArticleController {
 		}
 		return ResponseBean.succ(article);
 	}
-	
+
 	@GetMapping("/v1/getArticleStatus/{articleId}")
 	@ApiOperation("根据ID获取文章状态")
 	public ResponseBean getArticleStatus(@PathVariable("articleId") String articleId) {
@@ -123,7 +122,7 @@ public class ArticleController {
 		}
 		return ResponseBean.succ();
 	}
-	
+
 	@GetMapping("/v1/submitCheck/{articleId}")
 	@ApiOperation("文章提交审核")
 	public ResponseBean submitCheck(@PathVariable("articleId") String articleId) {
@@ -136,10 +135,24 @@ public class ArticleController {
 		}
 		return ResponseBean.succ();
 	}
-	
+
+	@PutMapping("/v1/repealCheck/{articleId}")
+	@ApiOperation("文章撤销审核")
+	public ResponseBean repealCheck(@PathVariable("articleId") String articleId) {
+		try {
+			articleService.repealCheck(articleId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("文章撤销审核接口异常 : " + e);
+			return ResponseBean.fail(e.getMessage());
+		}
+		return ResponseBean.succ();
+	}
+
 	@DeleteMapping("/v1/deleteArticle/{articleId}/{userId}")
 	@ApiOperation("删除文章")
-	public ResponseBean deleteArticle(@PathVariable("articleId") String articleId, @PathVariable("userId") String userId) {
+	public ResponseBean deleteArticle(@PathVariable("articleId") String articleId,
+			@PathVariable("userId") String userId) {
 		try {
 			articleService.deleteArticle(articleId, userId);
 		} catch (Exception e) {
@@ -149,6 +162,19 @@ public class ArticleController {
 		}
 		return ResponseBean.succ();
 	}
-	
-	
+
+	@PutMapping("/v1/setIsPrivate/{articleId}/{isPrivate}")
+	@ApiOperation("设置文章是否公开")
+	public ResponseBean setIsPrivate(@PathVariable("articleId") String articleId,
+			@PathVariable("isPrivate") Boolean isPrivate) {
+		try {
+			articleService.setIsPrivate(articleId, isPrivate);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("设置文章是否公开接口异常 : " + e);
+			return ResponseBean.fail(e.getMessage());
+		}
+		return ResponseBean.succ();
+	}
+
 }

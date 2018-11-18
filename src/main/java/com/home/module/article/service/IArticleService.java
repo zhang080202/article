@@ -13,7 +13,7 @@ import com.home.model.Article;
  */
 public interface IArticleService extends IService<Article> {
 
-	IPage<Article> getArticlerList(Integer page, Integer pageSize, Integer isPrivate, String userId);
+	IPage<Article> getArticlerList(Integer page, Integer pageSize, Boolean isPrivate, String userId);
 
 	Article getArticlerById(String articleId);
 
@@ -22,5 +22,9 @@ public interface IArticleService extends IService<Article> {
 	String submitCheck(String articleId);
 
 	String deleteArticle(String articleId, String userId);
+
+	String repealCheck(String articleId);
+
+	String setIsPrivate(String articleId, Boolean isPrivate);
 
 }

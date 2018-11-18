@@ -16,7 +16,7 @@ import com.home.model.UserModel;
 import com.home.module.user.mapper.UserMapper;
 import com.home.module.user.service.IUserService;
 
-@Service("testServiceImpl")
+@Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, UserModel> implements IUserService {
 
 	@Autowired

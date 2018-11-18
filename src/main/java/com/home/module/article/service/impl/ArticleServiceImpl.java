@@ -42,10 +42,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 	private ISysOssService sysOssService;
 
 	@Override
-	public IPage<Article> getArticlerList(Integer page, Integer pageSize, Integer isPrivate, String userId) {
+	public IPage<Article> getArticlerList(Integer page, Integer pageSize, Boolean isPrivate, String userId) {
 		IPage<Article> result = baseMapper.selectPage(new Page<Article>(page, pageSize),
 				new QueryWrapper<Article>().eq("is_private", isPrivate)
 										   .eq(StringUtils.isNotBlank(userId), "create_user", userId)
+										   .eq(!isPrivate, "status", 2)
 										   .eq("flag", 0)
 										   .orderByDesc("read_num"));
 		//获取图片url 并授权
@@ -105,7 +106,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 		}
 		
 		article.setStatus(1);
-		article.setPassTime(LocalDateTime.now());
+//		article.setPassTime(LocalDateTime.now());
 		baseMapper.updateById(article);
 		
 		return article.getCreateUser();
@@ -123,6 +124,32 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 		article.setFlag(1);
 		baseMapper.updateById(article);
 		return userId;
+	}
+
+	@Override
+	@opLog("文章撤销审核")
+	public String repealCheck(String articleId) {
+		Article article = baseMapper.selectById(articleId);
+		
+		if (article == null) {
+			throw new ServiceException(ServiceEnum.BUSINESS_FAIL.getCode(), "该文章不存在");
+		}
+		article.setStatus(0);
+		baseMapper.updateById(article);
+		return article.getCreateUser();
+	}
+
+	@Override
+	@opLog("设置文章是否公开")
+	public String setIsPrivate(String articleId, Boolean isPrivate) {
+		Article article = baseMapper.selectById(articleId);
+		
+		if (article == null) {
+			throw new ServiceException(ServiceEnum.BUSINESS_FAIL.getCode(), "该文章不存在");
+		}
+		article.setIsPrivate(isPrivate);
+		baseMapper.updateById(article);
+		return article.getCreateUser();
 	}
 
 }
