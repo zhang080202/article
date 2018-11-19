@@ -1,5 +1,7 @@
 package com.home.module.article.controller;
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -175,6 +177,20 @@ public class ArticleController {
 			return ResponseBean.fail(e.getMessage());
 		}
 		return ResponseBean.succ();
+	}
+	
+	@GetMapping("/v1/getArticleCount/{userId}")
+	@ApiOperation("查询文章数量")
+	public ResponseBean getArticleCount(@PathVariable("userId") String userId) {
+		Map<String, Object> params = null;
+		try {
+			params = articleService.getArticleCount(userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("查询文章数量接口异常 : " + e);
+			return ResponseBean.fail(e.getMessage());
+		}
+		return ResponseBean.succ(params);
 	}
 
 }

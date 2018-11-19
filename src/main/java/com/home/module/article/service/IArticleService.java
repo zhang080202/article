@@ -1,5 +1,7 @@
 package com.home.module.article.service;
 
+import java.util.Map;
+
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.home.model.Article;
@@ -26,5 +28,7 @@ public interface IArticleService extends IService<Article> {
 	String repealCheck(String articleId);
 
 	String setIsPrivate(String articleId, Boolean isPrivate);
+
+	Map<String, Object> getArticleCount(String userId);
 
 }

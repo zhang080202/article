@@ -1,7 +1,9 @@
 package com.home.module.article.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -150,6 +152,22 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 		article.setIsPrivate(isPrivate);
 		baseMapper.updateById(article);
 		return article.getCreateUser();
+	}
+
+	@Override
+	public Map<String, Object> getArticleCount(String userId) {
+		Integer privateNum = baseMapper.selectCount(new QueryWrapper<Article>().eq("is_private", true)
+														  				       .eq(StringUtils.isNotBlank(userId), "create_user", userId)
+														  				       .eq("flag", 0));
+		Integer openNum = baseMapper.selectCount(new QueryWrapper<Article>().eq("is_private", false)
+				  														    .eq(StringUtils.isNotBlank(userId), "create_user", userId)
+				  														    .eq("status", 2)
+				  														    .eq("flag", 0)
+				  														    .orderByDesc("read_num"));
+		Map<String, Object> result = new HashMap<>();
+		result.put("privateNum", privateNum);
+		result.put("openNum", openNum);
+		return result;
 	}
 
 }
