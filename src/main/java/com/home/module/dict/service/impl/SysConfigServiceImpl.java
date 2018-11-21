@@ -36,6 +36,7 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
 		Map<String, Object> result = new HashMap<>();
 		result.put("key", key1);
 		result.put("value", value);
+		result.put("result", list);
 		return result;
 	}
 
