@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -41,10 +42,10 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = "文章管理相关接口")
 public class ArticleController {
 
-	private static Logger	logger	= LoggerFactory.getLogger(ArticleController.class);
+	private static Logger logger = LoggerFactory.getLogger(ArticleController.class);
 
 	@Autowired
-	private IArticleService	articleService;
+	private IArticleService articleService;
 
 	@GetMapping("/v1/getArticlerList/{page}/{pageSize}")
 	@ApiOperation("获取文章列表信息")
@@ -69,6 +70,23 @@ public class ArticleController {
 		IPage<Article> result = null;
 		try {
 			result = articleService.getArticlerList(page, pageSize, isPrivate, userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("获取文章列表信息接口异常 Caused by " + e);
+			return ResponseBean.fail();
+		}
+		return ResponseBean.succ(result);
+	}
+
+	@GetMapping("/v1/getArticlerListByUser")
+	@ApiOperation("获取用户的文章列表信息")
+	public ResponseBean getArticlerListByUser(@RequestParam("page") Integer page,
+			@RequestParam("pageSize") Integer pageSize, @RequestParam("isPrivate") Boolean isPrivate,
+			@RequestParam("userId") String userId, @RequestParam(value = "type", required = false) Integer type,
+			@RequestParam(value = "status", required = false) Integer status, @RequestParam(value = "isDesc", required = false) Boolean isDesc) {
+		IPage<Article> result = null;
+		try {
+			result = articleService.getArticlerList(page, pageSize, isPrivate, userId, type, status, isDesc);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("获取文章列表信息接口异常 Caused by " + e);
@@ -178,13 +196,14 @@ public class ArticleController {
 		}
 		return ResponseBean.succ();
 	}
-	
-	@GetMapping("/v1/getArticleCount/{userId}")
+
+	@GetMapping("/v1/getArticleCount")
 	@ApiOperation("查询文章数量")
-	public ResponseBean getArticleCount(@PathVariable("userId") String userId) {
+	public ResponseBean getArticleCount(@RequestParam("userId") String userId, @RequestParam(value = "type", required = false) Integer type,
+			@RequestParam(value = "status", required = false) Integer status) {
 		Map<String, Object> params = null;
 		try {
-			params = articleService.getArticleCount(userId);
+			params = articleService.getArticleCount(userId, type, status);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("查询文章数量接口异常 : " + e);

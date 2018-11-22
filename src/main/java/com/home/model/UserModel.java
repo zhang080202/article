@@ -1,8 +1,7 @@
 package com.home.model;
 
-import java.util.Date;
-
-import javax.validation.constraints.Email;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -11,29 +10,44 @@ import com.baomidou.mybatisplus.annotation.TableName;
 public class UserModel {
 
 	@TableId
-	private String	userId;
+	private String userId;
 
-	private String	sessionKey;
+	private String sessionKey;
 
-	private String	name;
+	private String name;
 
-	private String	city;
+	private String city;
 
-	private String	province;
-	
+	private String province;
+
 	private String phone;
 
-	private Date	birthday;
+	private LocalDate birthday;
 
-	private Integer	gender;
+	private Integer gender;
 
-	private Date	lastDate;
+	private LocalDateTime lastDate;
 
-	private Integer	loginNum;
+	private Integer loginNum;
 
-	private String	remark;
-	
-	
+	private String remark;
+
+	public LocalDate getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(LocalDate birthday) {
+		this.birthday = birthday;
+	}
+
+	public LocalDateTime getLastDate() {
+		return lastDate;
+	}
+
+	public void setLastDate(LocalDateTime lastDate) {
+		this.lastDate = lastDate;
+	}
+
 	public String getPhone() {
 		return phone;
 	}
@@ -66,28 +80,12 @@ public class UserModel {
 		this.sessionKey = sessionKey;
 	}
 
-	public Date getLastDate() {
-		return lastDate;
-	}
-
-	public void setLastDate(Date lastDate) {
-		this.lastDate = lastDate;
-	}
-
 	public Integer getLoginNum() {
 		return loginNum;
 	}
 
 	public void setLoginNum(Integer loginNum) {
 		this.loginNum = loginNum;
-	}
-
-	public Date getBirthday() {
-		return birthday;
-	}
-
-	public void setBirthday(Date birthday) {
-		this.birthday = birthday;
 	}
 
 	public Integer getGender() {

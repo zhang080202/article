@@ -2,6 +2,8 @@ package com.home.module.article.service;
 
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.PathVariable;
+
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.home.model.Article;
@@ -16,6 +18,9 @@ import com.home.model.Article;
 public interface IArticleService extends IService<Article> {
 
 	IPage<Article> getArticlerList(Integer page, Integer pageSize, Boolean isPrivate, String userId);
+	
+	IPage<Article> getArticlerList(Integer page, Integer pageSize, Boolean isPrivate, String userId, Integer type, Integer status,
+			Boolean isDesc);
 
 	Article getArticlerById(String articleId);
 
@@ -29,6 +34,6 @@ public interface IArticleService extends IService<Article> {
 
 	String setIsPrivate(String articleId, Boolean isPrivate);
 
-	Map<String, Object> getArticleCount(String userId);
+	Map<String, Object> getArticleCount(String userId, Integer type, Integer status);
 
 }

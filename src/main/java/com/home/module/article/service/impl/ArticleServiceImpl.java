@@ -45,25 +45,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
 	@Override
 	public IPage<Article> getArticlerList(Integer page, Integer pageSize, Boolean isPrivate, String userId) {
-		IPage<Article> result = baseMapper.selectPage(new Page<Article>(page, pageSize),
-				new QueryWrapper<Article>().eq("is_private", isPrivate)
-										   .eq(StringUtils.isNotBlank(userId), "create_user", userId)
-										   .eq(!isPrivate, "status", 2)
-										   .eq("flag", 0)
-										   .orderByDesc("read_num"));
-		//获取图片url 并授权
-		List<Article> list = result.getRecords();
-		OssUtil ossUtil = new OssUtil();
-		for (Article article : list) {
-			if (StringUtils.isNotBlank(article.getImage())) {
-				SysOss oss = sysOssService.getById(article.getImage());
-				String authAccess = ossUtil.authAccess(oss.getOssUrl());
-				//列表查询不返回文章内容
-				article.setContent(null);
-				article.setAccessImage(authAccess);
-			}
-		}
-		return result;
+		return this.getArticlerList(page, pageSize, isPrivate, userId, -1, -1, false);
 	}
 
 	@Override
@@ -155,18 +137,47 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 	}
 
 	@Override
-	public Map<String, Object> getArticleCount(String userId) {
+	public Map<String, Object> getArticleCount(String userId, Integer type, Integer status) {
 		Integer privateNum = baseMapper.selectCount(new QueryWrapper<Article>().eq("is_private", true)
 														  				       .eq(StringUtils.isNotBlank(userId), "create_user", userId)
-														  				       .eq("flag", 0));
+														  				       .eq("flag", 0)
+														  				       .eq(type != -1, "article_type", type)
+					  														   .eq(status != -1, "status", status));
 		Integer openNum = baseMapper.selectCount(new QueryWrapper<Article>().eq("is_private", false)
 				  														    .eq(StringUtils.isNotBlank(userId), "create_user", userId)
 				  														    .eq("status", 2)
 				  														    .eq("flag", 0)
-				  														    .orderByDesc("read_num"));
+				  														    .eq(type != -1, "article_type", type)
+				  														    .eq(status != -1, "status", status));
 		Map<String, Object> result = new HashMap<>();
 		result.put("privateNum", privateNum);
 		result.put("openNum", openNum);
+		return result;
+	}
+
+	@Override
+	public IPage<Article> getArticlerList(Integer page, Integer pageSize, Boolean isPrivate, String userId,
+			Integer type, Integer status, Boolean isDesc) {
+		IPage<Article> result = baseMapper.selectPage(new Page<Article>(page, pageSize),
+				new QueryWrapper<Article>().eq("is_private", isPrivate)
+										   .eq(StringUtils.isNotBlank(userId), "create_user", userId)
+										   .eq(!isPrivate, "status", 2)
+										   .eq("flag", 0)
+										   .eq(type != -1, "article_type", type)
+										   .eq(status != -1, "status", status)
+										   .orderByDesc(isDesc, "create_time"));
+		//获取图片url 并授权
+		List<Article> list = result.getRecords();
+		OssUtil ossUtil = new OssUtil();
+		for (Article article : list) {
+			if (StringUtils.isNotBlank(article.getImage())) {
+				SysOss oss = sysOssService.getById(article.getImage());
+				String authAccess = ossUtil.authAccess(oss.getOssUrl());
+				//列表查询不返回文章内容
+				article.setContent(null);
+				article.setAccessImage(authAccess);
+			}
+		}
 		return result;
 	}
 

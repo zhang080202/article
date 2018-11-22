@@ -1,5 +1,6 @@
 package com.home.module.user.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +49,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserModel> implemen
 			user = new UserModel();
 			user.setUserId(openId);
 			user.setLoginNum(1);
-			user.setLastDate(new Date());
+			user.setLastDate(LocalDateTime.now());
 			user.setName(info.get("nickName").toString());
 			user.setCity(info.get("city").toString());
 			user.setProvince(info.get("province").toString());
@@ -59,7 +60,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserModel> implemen
 		} else {
 
 			user.setLoginNum(user.getLoginNum() + 1);
-			user.setLastDate(new Date());
+			user.setLastDate(LocalDateTime.now());
 
 			baseMapper.updateById(user);
 		}
