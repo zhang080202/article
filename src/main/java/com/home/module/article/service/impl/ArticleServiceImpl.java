@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,12 +19,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.home.common.annotation.opLog;
 import com.home.common.enums.ServiceEnum;
 import com.home.common.exception.ServiceException;
-import com.home.common.utils.OssUtil;
 import com.home.model.Article;
 import com.home.model.SysOss;
+import com.home.model.UserModel;
 import com.home.module.article.mapper.ArticleMapper;
 import com.home.module.article.service.IArticleService;
 import com.home.module.oss.service.ISysOssService;
+import com.home.module.user.service.IUserService;
 
 /**
  * 
@@ -40,8 +43,12 @@ import com.home.module.oss.service.ISysOssService;
 @Transactional
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements IArticleService {
 	
+	private static Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
+	
 	@Autowired
 	private ISysOssService sysOssService;
+	@Autowired
+	private IUserService userService;
 
 	@Override
 	public IPage<Article> getArticlerList(Integer page, Integer pageSize, Boolean isPrivate, String userId) {
@@ -50,21 +57,45 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
 	@Override
 	public Article getArticlerById(String articleId) {
+		Article article = baseMapper.selectById(articleId);
+		if (StringUtils.isNotBlank(article.getImage())) {
+			SysOss oss = sysOssService.getById(article.getImage());
+			article.setAccessImage(oss.getOssUrl());
+		}
+		UserModel user = userService.queryUser(article.getCreateUser());
+		article.setUsername(user.getName());
 		return baseMapper.selectById(articleId);
 	}
 
 	@Override
 	@opLog("保存文章")
 	public String saveArticle(Article article) {
-		Article articleDB = baseMapper.selectOne(new QueryWrapper<Article>().eq("title", article.getTitle())
-																			.eq("flag", 0)
-																			.eq("content", article.getContent()));
-		if (articleDB != null) {
-			throw new ServiceException(ServiceEnum.BUSINESS_FAIL.getCode(), "请勿重复提交");
+//		Article articleDB = baseMapper.selectOne(new QueryWrapper<Article>().eq("title", article.getTitle())
+//																			.eq("flag", 0)
+//																			.eq("content", article.getContent()));
+		
+		if (StringUtils.isNotBlank(article.getArticleId())) {
+			//修改文章
+			Article articleDB = baseMapper.selectById(article.getArticleId());
+			articleDB.setUpdateTime(LocalDateTime.now());
+			articleDB.setStatus(0);
+			articleDB.setContent(article.getContent());
+			articleDB.setIsPrivate(true);
+			articleDB.setArticleType(article.getArticleType());
+			articleDB.setTitle(article.getTitle());
+			articleDB.setImage(article.getImage());
+			logger.info("修改文章 -----------> " + article.toString());
+			baseMapper.updateById(articleDB);
+		} else {
+			//新增文章
+			article.setCreateTime(LocalDateTime.now());
+			article.setStatus(0);
+			logger.info("新增文章 -----------> " + article.toString());
+			baseMapper.insert(article);
 		}
-		article.setCreateTime(LocalDateTime.now());
-		article.setStatus(0);
-		this.saveOrUpdate(article);
+//		if (articleDB != null) {
+//			throw new ServiceException(ServiceEnum.BUSINESS_FAIL.getCode(), "请勿重复提交");
+//		}
 		
 		return article.getCreateUser();
 	}
@@ -168,14 +199,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 										   .orderByDesc(isDesc, "create_time"));
 		//获取图片url 并授权
 		List<Article> list = result.getRecords();
-		OssUtil ossUtil = new OssUtil();
+//		OssUtil ossUtil = new OssUtil();
 		for (Article article : list) {
 			if (StringUtils.isNotBlank(article.getImage())) {
 				SysOss oss = sysOssService.getById(article.getImage());
-				String authAccess = ossUtil.authAccess(oss.getOssUrl());
+//				String authAccess = ossUtil.authAccess(oss.getOssUrl());
 				//列表查询不返回文章内容
 				article.setContent(null);
-				article.setAccessImage(authAccess);
+				article.setAccessImage(oss.getOssUrl());
 			}
 		}
 		return result;

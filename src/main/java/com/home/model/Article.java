@@ -43,6 +43,8 @@ public class Article implements Serializable {
 	private String createUser;
 
 	private LocalDateTime createTime;
+	
+	private LocalDateTime updateTime;
 	//
 	private LocalDateTime passTime; //通过审核时间
 	
@@ -57,6 +59,26 @@ public class Article implements Serializable {
 	 */
 	private Integer flag;
 	
+	@TableField(exist = false)
+	private String username;
+	
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public LocalDateTime getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(LocalDateTime updateTime) {
+		this.updateTime = updateTime;
+	}
+
 	public Integer getFlag() {
 		return flag;
 	}
@@ -164,4 +186,11 @@ public class Article implements Serializable {
 		this.image = image;
 	}
 
+	@Override
+	public String toString() {
+		return "Article [articleId=" + articleId + ", articleType=" + articleType + ", content=" + content + ", title="
+				+ title + ", status=" + status + ", createUser=" + createUser + ", createTime=" + createTime
+				+ ", updateTime=" + updateTime + ", passTime=" + passTime + ", image=" + image + ", readNum=" + readNum
+				+ ", isPrivate=" + isPrivate + ", flag=" + flag + ", accessImage=" + accessImage + "]";
+	}
 }

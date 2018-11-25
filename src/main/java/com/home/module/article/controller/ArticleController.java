@@ -133,11 +133,11 @@ public class ArticleController {
 			articleService.saveArticle(article);
 		} catch (ServiceException e) {
 			e.printStackTrace();
-			logger.error("保存文章数据错误  + " + e.toString());
+			logger.error("保存文章数据错误  " + e);
 			return ResponseBean.fail(e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.error("保存文章接口异常  + " + e.toString());
+			logger.error("保存文章接口异常  " + e);
 			return ResponseBean.fail();
 		}
 		return ResponseBean.succ();

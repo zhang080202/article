@@ -41,17 +41,19 @@ public class OssUtil {
 	 */
 	public String uploadFile(MultipartFile file) throws Exception {
 		String filename = file.getOriginalFilename();
-		String url = "";
+		StringBuffer url = new StringBuffer();
 		try {
 			client.putObject(bucketName, filename, file.getInputStream());
-			url = authAccess(filename);
+			//授权访问url
+//			url = authAccess(filename);
+			url = url.append("https://").append(bucketName).append(".").append(endpoint).append("/").append(filename);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception("文件上传失败", e);
 		} finally {
 			client.shutdown();
 		}
-		return url;
+		return url.toString();
 	}
 	
 	/**
