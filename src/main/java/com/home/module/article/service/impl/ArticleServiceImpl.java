@@ -211,7 +211,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 		}
 		return result;
 	}
-
+	
+	/**
+	 * 点赞
+	 */
 	@Override
 	@Transactional
 	public void praiseArticle(Integer praiseNum, String articleId, String userId) {
