@@ -59,18 +59,27 @@ public class Article implements Serializable {
 	 */
 	private Integer flag;
 	
+	private Integer praiseNum;
+	
 	@TableField(exist = false)
 	private String username;
 	
-	
+	public Integer getPraiseNum() {
+		return praiseNum;
+	}
+
+	public void setPraiseNum(Integer praiseNum) {
+		this.praiseNum = praiseNum;
+	}
+
 	public String getUsername() {
 		return username;
 	}
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
 
+	}
 	public LocalDateTime getUpdateTime() {
 		return updateTime;
 	}

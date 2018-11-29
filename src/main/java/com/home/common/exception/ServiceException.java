@@ -1,5 +1,7 @@
 package com.home.common.exception;
 
+import com.home.common.enums.ServiceEnum;
+
 public class ServiceException extends RuntimeException {
 
 	private static final long	serialVersionUID	= 8935805243057842722L;
@@ -14,6 +16,10 @@ public class ServiceException extends RuntimeException {
 	public ServiceException(Integer code, String message) {
 		super(message);
 		this.code = code;
+	}
+	
+	public ServiceException(String message) {
+		this(ServiceEnum.BUSINESS_FAIL.getCode(), message);
 	}
 
 	@Override

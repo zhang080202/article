@@ -1,5 +1,6 @@
 package com.home.module.article.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -15,12 +16,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.home.common.exception.ServiceException;
 import com.home.common.utils.ValidatorUtil;
 import com.home.model.Article;
 import com.home.model.ResponseBean;
+import com.home.model.UserPraise;
 import com.home.module.article.service.IArticleService;
+import com.home.module.praise.service.IUserPraiseService;
+import com.home.module.praise.service.impl.UserPraiseServiceImpl;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -46,6 +51,8 @@ public class ArticleController {
 
 	@Autowired
 	private IArticleService articleService;
+	@Autowired
+	private IUserPraiseService userPraiseService;
 
 	@GetMapping("/v1/getArticlerList/{page}/{pageSize}")
 	@ApiOperation("获取文章列表信息")
@@ -83,7 +90,8 @@ public class ArticleController {
 	public ResponseBean getArticlerListByUser(@RequestParam("page") Integer page,
 			@RequestParam("pageSize") Integer pageSize, @RequestParam("isPrivate") Boolean isPrivate,
 			@RequestParam("userId") String userId, @RequestParam(value = "type", required = false) Integer type,
-			@RequestParam(value = "status", required = false) Integer status, @RequestParam(value = "isDesc", required = false) Boolean isDesc) {
+			@RequestParam(value = "status", required = false) Integer status,
+			@RequestParam(value = "isDesc", required = false) Boolean isDesc) {
 		IPage<Article> result = null;
 		try {
 			result = articleService.getArticlerList(page, pageSize, isPrivate, userId, type, status, isDesc);
@@ -95,18 +103,24 @@ public class ArticleController {
 		return ResponseBean.succ(result);
 	}
 
-	@GetMapping("/v1/getArticlerById/{articleId}")
+	@GetMapping("/v1/getArticlerById/{articleId}/{userId}")
 	@ApiOperation("根据ID获取文章信息")
-	public ResponseBean getArticlerById(@PathVariable("articleId") String articleId) {
+	public ResponseBean getArticlerById(@PathVariable("articleId") String articleId, @PathVariable("userId") String userId) {
 		Article article = null;
+		Map<String, Object> result = new HashMap<>();
 		try {
 			article = articleService.getArticlerById(articleId);
+			int count = userPraiseService.count(new QueryWrapper<UserPraise>().eq("article_id", articleId)
+																  			  .eq("user_id", userId));
+			result.put("detail", article);
+			result.put("isPraise", count);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("根据ID获取文章信息 接口异常 Caused by " + e);
 			return ResponseBean.fail();
 		}
-		return ResponseBean.succ(article);
+		return ResponseBean.succ(result);
 	}
 
 	@GetMapping("/v1/getArticleStatus/{articleId}")
@@ -199,7 +213,8 @@ public class ArticleController {
 
 	@GetMapping("/v1/getArticleCount")
 	@ApiOperation("查询文章数量")
-	public ResponseBean getArticleCount(@RequestParam("userId") String userId, @RequestParam(value = "type", required = false) Integer type,
+	public ResponseBean getArticleCount(@RequestParam("userId") String userId,
+			@RequestParam(value = "type", required = false) Integer type,
 			@RequestParam(value = "status", required = false) Integer status) {
 		Map<String, Object> params = null;
 		try {
@@ -210,6 +225,20 @@ public class ArticleController {
 			return ResponseBean.fail(e.getMessage());
 		}
 		return ResponseBean.succ(params);
+	}
+
+	@GetMapping("/v1/praiseArticle/{praiseNum}/{articleId}/{userId}")
+	@ApiOperation("点赞")
+	public ResponseBean praiseArticle(@PathVariable("praiseNum") Integer praiseNum,
+			@PathVariable("articleId") String articleId, @PathVariable("userId") String userId) {
+		try {
+			articleService.praiseArticle(praiseNum, articleId, userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("点赞接口异常 : " + e);
+			return ResponseBean.fail(e.getMessage());
+		}
+		return ResponseBean.succ();
 	}
 
 }

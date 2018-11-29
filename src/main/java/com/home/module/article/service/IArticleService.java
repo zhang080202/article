@@ -2,8 +2,6 @@ package com.home.module.article.service;
 
 import java.util.Map;
 
-import org.springframework.web.bind.annotation.PathVariable;
-
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.home.model.Article;
@@ -35,5 +33,7 @@ public interface IArticleService extends IService<Article> {
 	String setIsPrivate(String articleId, Boolean isPrivate);
 
 	Map<String, Object> getArticleCount(String userId, Integer type, Integer status);
+
+	void praiseArticle(Integer praiseNum, String articleId, String userId);
 
 }
