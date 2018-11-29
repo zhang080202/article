@@ -72,7 +72,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 		//增加一次阅读次数
 		article.setReadNum(article.getReadNum() + 1);
 		baseMapper.updateById(article);
-		return baseMapper.selectById(articleId);
+		return article;
 	}
 
 	@Override
