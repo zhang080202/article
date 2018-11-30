@@ -28,7 +28,12 @@ public class MessageController {
 	
 	@PostMapping("/v1/saveMessage")
 	public ResponseBean saveMessage(@RequestBody Message msg) {
-		messageService.saveMessage(msg);
+		try {
+			messageService.saveMessage(msg);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return ResponseBean.succ();
 	}
 }
