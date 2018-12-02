@@ -10,27 +10,37 @@ import com.baomidou.mybatisplus.annotation.TableName;
 public class UserModel {
 
 	@TableId
-	private String userId;
+	private String			userId;
 
-	private String sessionKey;
+	private String			sessionKey;
 
-	private String name;
+	private String			name;
 
-	private String city;
+	private String			city;
 
-	private String province;
+	private String			province;
 
-	private String phone;
+	private String			phone;
 
-	private LocalDate birthday;
+	private LocalDate		birthday;
 
-	private Integer gender;
+	private Integer			gender;
 
-	private LocalDateTime lastDate;
+	private LocalDateTime	lastDate;
 
-	private Integer loginNum;
+	private Integer			loginNum;
 
-	private String remark;
+	private String			remark;
+
+	private Integer			msgFlg;		// 判断 该用户是否有留言权限  1 无权限 0 有权限
+
+	public Integer getMsgFlg() {
+		return msgFlg;
+	}
+
+	public void setMsgFlg(Integer msgFlg) {
+		this.msgFlg = msgFlg;
+	}
 
 	public LocalDate getBirthday() {
 		return birthday;

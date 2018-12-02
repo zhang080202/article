@@ -194,9 +194,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 			Integer type, Integer status, Boolean isDesc) {
 		IPage<Article> result = baseMapper.selectPage(new Page<Article>(page, pageSize),
 				new QueryWrapper<Article>().eq("is_private", isPrivate)
-						.eq(StringUtils.isNotBlank(userId), "create_user", userId).eq(!isPrivate, "status", 2)
-						.eq("flag", 0).eq(type != -1, "article_type", type).eq(status != -1, "status", status)
-						.orderByDesc(isDesc, "create_time"));
+										   .eq(StringUtils.isNotBlank(userId), "create_user", userId).eq(!isPrivate, "status", 2)
+										   .eq("flag", 0).eq(type != -1, "article_type", type).eq(status != -1, "status", status)
+										   .orderByDesc(isDesc, "create_time"));
 		// 获取图片url 并授权
 		List<Article> list = result.getRecords();
 //		OssUtil ossUtil = new OssUtil();

@@ -34,7 +34,7 @@ public class Message implements Serializable {
 	private Integer order;
 
 	private LocalDateTime createTime;
-
+	
 	public String getMsgId() {
 		return msgId;
 	}

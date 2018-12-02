@@ -1,5 +1,6 @@
 package com.home.module.message.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.home.model.Message;
 
@@ -14,5 +15,7 @@ import com.home.model.Message;
 public interface IMessageService extends IService<Message> {
 
 	void saveMessage(Message msg);
+
+	IPage<Message> queryMessageList(String articleId);
 
 }
