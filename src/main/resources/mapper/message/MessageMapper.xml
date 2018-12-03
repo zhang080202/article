@@ -1,5 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.home.module.message.mapper.MessageMapper">
+	
+	<sql id="SELECT_COLUNM_MESSAGE">
+		a.msg_id AS msgId,
+		a.article_id AS articleId,
+		a.user_id AS userId,
+		a.msg_content AS msgContent,
+		a.create_time AS createTime
+	</sql>
+	
+	<sql id="SELECT_COLUNM_USER">
+		b.name AS username,
+		b.avatar_url AS avatarUrl
+	</sql>
 
+	<select id="queryMessageByArticle" resultType="map">
+		SELECT 
+			<include refid="SELECT_COLUNM_MESSAGE"></include>,
+			<include refid="SELECT_COLUNM_USER"></include>
+		FROM 
+			message a 
+		LEFT JOIN 
+			sys_user b ON a.user_id = b.user_id	
+		WHERE 1=1		
+		<if test="params.articleId != null and params.articleId != ''">
+			AND a.article_id = #{params.articleId} 
+		</if>
+		 	ORDER BY msg_order		
+	</select>
 </mapper>

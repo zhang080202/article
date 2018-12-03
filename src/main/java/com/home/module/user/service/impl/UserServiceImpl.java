@@ -54,6 +54,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, UserModel> implemen
 			user.setCity(info.get("city").toString());
 			user.setProvince(info.get("province").toString());
 			user.setGender(Integer.parseInt(info.get("gender").toString()));
+			user.setAvatarUrl(info.get("avatarUrl").toString());
 			user.setSessionKey(sessionKey);
 
 			baseMapper.insert(user);

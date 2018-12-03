@@ -1,6 +1,8 @@
 package com.home.module.message.controller;
 
 
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +59,7 @@ public class MessageController {
 	@GetMapping("/v1/list/{articleId}")
 	@ApiOperation("根据文章ID获取留言列表")
 	public ResponseBean list(@PathVariable("articleId") String articleId) {
-		IPage<Message> page = null;
+		IPage<Map<String, Object>> page = null;
 		try {
 			page = messageService.queryMessageList(articleId);
 		} catch (Exception e) {

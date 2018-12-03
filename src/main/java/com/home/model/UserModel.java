@@ -32,14 +32,24 @@ public class UserModel {
 
 	private String			remark;
 
-	private Integer			msgFlg;		// 判断 该用户是否有留言权限  1 无权限 0 有权限
+	private Integer			msgFlag;	// 判断 该用户是否有留言权限 1 无权限 0 有权限
 
-	public Integer getMsgFlg() {
-		return msgFlg;
+	private String			avatarUrl;	// 用户头像
+
+	public String getAvatarUrl() {
+		return avatarUrl;
 	}
 
-	public void setMsgFlg(Integer msgFlg) {
-		this.msgFlg = msgFlg;
+	public void setAvatarUrl(String avatarUrl) {
+		this.avatarUrl = avatarUrl;
+	}
+
+	public Integer getMsgFlag() {
+		return msgFlag;
+	}
+
+	public void setMsgFlag(Integer msgFlag) {
+		this.msgFlag = msgFlag;
 	}
 
 	public LocalDate getBirthday() {

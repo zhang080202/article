@@ -3,6 +3,7 @@ package com.home.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -17,24 +18,35 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @TableName("message")
 public class Message implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long	serialVersionUID	= 1L;
 
 	@TableId
-	private String msgId;
+	private String				msgId;
 
-	private String articleId;
+	private String				articleId;
 
-	private String userId;
+	private String				userId;
 
-	private String msgContent;
+	private String				msgContent;
 
 	/**
 	 * 排序 默认降序排列
 	 */
-	private Integer order;
+	private Integer				msgOrder;
 
-	private LocalDateTime createTime;
-	
+	private LocalDateTime		createTime;
+
+	@TableField(exist = false)
+	private String				username;
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public String getMsgId() {
 		return msgId;
 	}
@@ -67,20 +79,20 @@ public class Message implements Serializable {
 		this.msgContent = msgContent;
 	}
 
-	public Integer getOrder() {
-		return order;
-	}
-
-	public void setOrder(Integer order) {
-		this.order = order;
-	}
-
 	public LocalDateTime getCreateTime() {
 		return createTime;
 	}
 
 	public void setCreateTime(LocalDateTime createTime) {
 		this.createTime = createTime;
+	}
+
+	public Integer getMsgOrder() {
+		return msgOrder;
+	}
+
+	public void setMsgOrder(Integer msgOrder) {
+		this.msgOrder = msgOrder;
 	}
 
 }
