@@ -178,11 +178,16 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 	@Override
 	public Map<String, Object> getArticleCount(String userId, Integer type, Integer status) {
 		Integer privateNum = baseMapper.selectCount(new QueryWrapper<Article>().eq("is_private", true)
-				.eq(StringUtils.isNotBlank(userId), "create_user", userId).eq("flag", 0)
-				.eq(type != -1, "article_type", type).eq(status != -1, "status", status));
+																			   .eq(StringUtils.isNotBlank(userId), "create_user", userId)
+																			   .eq("flag", 0)
+																			   .eq(type != -1, "article_type", type)
+																			   .eq(status != -1, "status", status));
+		
 		Integer openNum = baseMapper.selectCount(new QueryWrapper<Article>().eq("is_private", false)
-				.eq(StringUtils.isNotBlank(userId), "create_user", userId).eq("status", 2).eq("flag", 0)
-				.eq(type != -1, "article_type", type).eq(status != -1, "status", status));
+																			.eq(StringUtils.isNotBlank(userId), "create_user", userId)
+																			.eq("status", 2)
+																			.eq("flag", 0)
+																			.eq(type != -1, "article_type", type).eq(status != -1, "status", status));
 		Map<String, Object> result = new HashMap<>();
 		result.put("privateNum", privateNum);
 		result.put("openNum", openNum);
