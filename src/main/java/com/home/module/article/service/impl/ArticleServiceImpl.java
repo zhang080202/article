@@ -17,6 +17,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.home.common.annotation.opLog;
+import com.home.common.enums.ArticleStatusEnum;
 import com.home.common.enums.ServiceEnum;
 import com.home.common.exception.ServiceException;
 import com.home.model.Article;
@@ -25,6 +26,7 @@ import com.home.model.UserModel;
 import com.home.model.UserPraise;
 import com.home.module.article.mapper.ArticleMapper;
 import com.home.module.article.service.IArticleService;
+import com.home.module.dict.service.ISysConfigService;
 import com.home.module.oss.service.ISysOssService;
 import com.home.module.praise.service.IUserPraiseService;
 import com.home.module.user.service.IUserService;
@@ -53,6 +55,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 	private IUserService userService;
 	@Autowired
 	private IUserPraiseService userPraiseService;
+	@Autowired
+	private ISysConfigService sysConfigService;
 
 	@Override
 	public IPage<Article> getArticlerList(Integer page, Integer pageSize, Boolean isPrivate, String userId) {
@@ -237,6 +241,20 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 			article.setPraiseNum(praiseNum);
 			baseMapper.updateById(article);
 		}
+	}
+
+	@Override
+	public IPage<Map<String,Object>> getArticlerListAll(Integer page, Integer pageSize, Map<String, Object> parse) {
+//		IPage<Article> result = baseMapper.selectPage(new Page<Article>(page, pageSize), new QueryWrapper<Article>().eq("flag", 0)
+//																													.orderByDesc("create_time"));
+		Page<Map<String,Object>> page2 = new Page<>(page, pageSize);
+		List<Map<String,Object>> list = baseMapper.getArticlerListAll(page2, parse);
+		for (Map<String, Object> map : list) {
+			int status = Integer.parseInt(map.get("status").toString());
+			map.put("statusValue", ArticleStatusEnum.findValue(status));
+		}
+		page2.setRecords(list);
+		return page2;
 	}
 
 }

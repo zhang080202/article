@@ -18,6 +18,8 @@ server:
     key-store-type: PKCS12
 mybatis-plus:
   mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    call-setters-on-nulls: true
   global-config:
     db-config:
       id-type: UUID    

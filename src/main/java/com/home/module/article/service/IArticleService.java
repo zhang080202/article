@@ -36,4 +36,6 @@ public interface IArticleService extends IService<Article> {
 
 	void praiseArticle(Integer praiseNum, String articleId, String userId);
 
+	IPage<Map<String, Object>> getArticlerListAll(Integer page, Integer pageSize, Map<String, Object> parse);
+
 }

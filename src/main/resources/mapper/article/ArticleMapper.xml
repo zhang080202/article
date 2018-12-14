@@ -1,5 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.home.module.article.mapper.ArticleMapper">
+	
+	<sql id="SELECT_ARTICLE_COLUNM">
+		a.article_id AS articleId,
+		a.article_type AS articleType,
+		a.title AS title,
+		a.status AS status,
+		a.create_user AS createUser,
+		DATE_FORMAT(a.create_time, '%Y-%m-%d %H:%i:%S') AS createTime,
+		DATE_FORMAT(a.pass_time, '%Y-%m-%d %H:%i:%S') AS passTime,
+		a.is_private AS isPrivate,
+		a.praise_num AS praiseNum
+ 	</sql>
+ 	
+ 	<sql id="SELECT_SYSOSS_COLUNM">
+ 		b.oss_url AS accessImage
+ 	</sql>
+ 	
+ 	<sql id="SELECT_SYSCONFIG_COLUNM">
+ 		c.remark AS remark
+ 	</sql>
+ 	
+ 	<sql id="SELECT_SYSUSER_COLUNM">
+ 		d.name AS userName
+ 	</sql>
 
+	<select id="getArticlerListAll" resultType="map">
+		SELECT 
+			<include refid="SELECT_ARTICLE_COLUNM" />,
+			<include refid="SELECT_SYSOSS_COLUNM" />,
+			<include refid="SELECT_SYSCONFIG_COLUNM" />,
+			<include refid="SELECT_SYSUSER_COLUNM" />
+		FROM 
+			article a 	
+		LEFT JOIN sys_oss b ON a.image = b.oss_id 
+		LEFT JOIN sys_config c ON a.article_type = c.param_value 
+		LEFT JOIN sys_user d ON a.create_user = d.user_id 
+			WHERE c.param_key like '%article_type_%' AND a.flag = 0 
+		<if test="params.title != null and params.title != ''">
+			AND a.title like CONCAT('%', #{params.title}, '%')
+		</if>		
+		<if test="params.isPrivate != null and params.isPrivate != '' and params.isPrivate != 'null'">
+			AND a.is_private = #{params.isPrivate}
+		</if>
+		<if test="params.status != null and params.status != '' and params.status != 'null'">
+			AND a.status = #{params.status}
+		</if>
+		<if test="params.startDate!= null and params.startDate != ''">
+			AND a.create_time &gt;= #{params.startDate}
+		</if>
+		<if test="params.endDate!= null and params.endDate != ''">
+			AND a.create_time &lt;= #{params.endDate}
+		</if>
+		ORDER BY a.create_time DESC	
+		
+	</select>
 </mapper>

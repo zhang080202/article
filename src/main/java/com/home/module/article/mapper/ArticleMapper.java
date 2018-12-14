@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.home.model.Article;
 
 /**
@@ -19,4 +21,5 @@ import com.home.model.Article;
 @Mapper
 public interface ArticleMapper extends BaseMapper<Article> {
 	
+	public List<Map<String, Object>> getArticlerListAll(Page page, @Param("params") Map<String, Object> params);
 }

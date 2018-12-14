@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.home.common.exception.ServiceException;
@@ -53,6 +54,22 @@ public class ArticleController {
 	private IArticleService articleService;
 	@Autowired
 	private IUserPraiseService userPraiseService;
+	
+	@GetMapping("/v1/getArticlerListAll/{page}/{pageSize}/{params}")
+	@ApiOperation("获取所有文章列表信息")
+	public ResponseBean getArticlerListAll(@PathVariable("page") Integer page,
+			@PathVariable("pageSize") Integer pageSize, @PathVariable("params") String params) {
+		IPage<Map<String,Object>> result = null;
+		Map<String,Object> parse = (Map<String, Object>) JSON.parse(params);
+		try {
+			result = articleService.getArticlerListAll(page, pageSize, parse);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("获取所有文章列表信息接口异常 Caused by " + e);
+			return ResponseBean.fail();
+		}
+		return ResponseBean.succ(result);
+	}
 
 	@GetMapping("/v1/getArticlerList/{page}/{pageSize}")
 	@ApiOperation("获取文章列表信息")
