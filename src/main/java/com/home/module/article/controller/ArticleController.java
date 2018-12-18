@@ -173,6 +173,24 @@ public class ArticleController {
 		}
 		return ResponseBean.succ();
 	}
+	
+	@PostMapping("/v1/updateArticle")
+	@ApiOperation("修改文章")
+	public ResponseBean updateArticle(@RequestBody Article article) {
+		try {
+			ValidatorUtil.validatorModel(article);
+			articleService.updateById(article);
+		} catch (ServiceException e) {
+			e.printStackTrace();
+			logger.error("修改文章数据错误  " + e);
+			return ResponseBean.fail(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("修改文章接口异常  " + e);
+			return ResponseBean.fail();
+		}
+		return ResponseBean.succ();
+	}
 
 	@GetMapping("/v1/submitCheck/{articleId}")
 	@ApiOperation("文章提交审核")

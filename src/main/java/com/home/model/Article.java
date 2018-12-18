@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * <p>
@@ -41,11 +42,14 @@ public class Article implements Serializable {
 	private Integer status;
 
 	private String createUser;
-
+	
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime createTime;
 	
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime updateTime;
-	//
+	
+	@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime passTime; //通过审核时间
 	
 	@NotBlank(message = "标题图片不能为空")
