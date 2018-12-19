@@ -21,6 +21,7 @@ import com.home.common.enums.ArticleStatusEnum;
 import com.home.common.enums.ServiceEnum;
 import com.home.common.exception.ServiceException;
 import com.home.model.Article;
+import com.home.model.SysConfig;
 import com.home.model.SysOss;
 import com.home.model.UserModel;
 import com.home.model.UserPraise;
@@ -65,7 +66,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
 	@Override
 	@Transactional
-	public Article getArticlerById(String articleId) {
+	public Article getArticlerById(String articleId, Integer isOpen) {
 		Article article = baseMapper.selectById(articleId);
 		if (StringUtils.isNotBlank(article.getImage())) {
 			SysOss oss = sysOssService.getById(article.getImage());
@@ -73,9 +74,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 		}
 		UserModel user = userService.queryUser(article.getCreateUser());
 		article.setUsername(user.getName());
+		
+		SysConfig config = sysConfigService.getDictByKeyAndValue("article_type_", article.getArticleType());
+		article.setTypeValue(config.getRemark());
 		//增加一次阅读次数
-		article.setReadNum(article.getReadNum() + 1);
-		baseMapper.updateById(article);
+		if (isOpen == 1) {
+			article.setReadNum(article.getReadNum() + 1);
+			baseMapper.updateById(article);
+		}
 		return article;
 	}
 
@@ -255,6 +261,23 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 		}
 		page2.setRecords(list);
 		return page2;
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class)
+	public void updateArticle(Article article) {
+		Article articleDB = baseMapper.selectById(article.getArticleId());
+		if (article.getStatus() == articleDB.getStatus()) {
+			//未改变审核状态
+			baseMapper.updateById(article);
+		} else if (article.getStatus() != articleDB.getStatus() && article.getStatus() != 2) {
+			//改变审核状态
+			baseMapper.updateById(article);
+		} else {
+			article.setPassTime(LocalDateTime.now());
+			baseMapper.updateById(article);
+		}
+		
 	}
 
 }

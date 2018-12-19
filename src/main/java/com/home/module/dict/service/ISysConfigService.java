@@ -1,6 +1,5 @@
 package com.home.module.dict.service;
 
-import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -17,5 +16,7 @@ import com.home.model.SysConfig;
 public interface ISysConfigService extends IService<SysConfig> {
 
 	Map<String, Object> getDictByKey(String key);
+
+	SysConfig getDictByKeyAndValue(String key, Integer value);
 
 }

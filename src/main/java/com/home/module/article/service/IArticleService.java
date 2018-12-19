@@ -20,7 +20,7 @@ public interface IArticleService extends IService<Article> {
 	IPage<Article> getArticlerList(Integer page, Integer pageSize, Boolean isPrivate, String userId, Integer type, Integer status,
 			Boolean isDesc);
 
-	Article getArticlerById(String articleId);
+	Article getArticlerById(String articleId, Integer isOpen);
 
 	String saveArticle(Article article);
 
@@ -37,5 +37,7 @@ public interface IArticleService extends IService<Article> {
 	void praiseArticle(Integer praiseNum, String articleId, String userId);
 
 	IPage<Map<String, Object>> getArticlerListAll(Integer page, Integer pageSize, Map<String, Object> parse);
+
+	void updateArticle(Article article);
 
 }

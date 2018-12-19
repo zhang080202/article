@@ -31,13 +31,19 @@ public class SysConfigServiceImpl extends ServiceImpl<SysConfigMapper, SysConfig
 							    .map((x) -> x.getParamValue())
 								.collect(Collectors.toList());
 		List<String> value = list.stream()
-								  .map((x) -> x.getRemark())
-								  .collect(Collectors.toList());
+								 .map((x) -> x.getRemark())
+								 .collect(Collectors.toList());
 		Map<String, Object> result = new HashMap<>();
 		result.put("key", key1);
 		result.put("value", value);
 		result.put("result", list);
 		return result;
+	}
+
+	@Override
+	public SysConfig getDictByKeyAndValue(String key, Integer value) {
+		return baseMapper.selectOne(new QueryWrapper<SysConfig>().like("param_key", key)
+																 .eq("param_value", value));
 	}
 
 }

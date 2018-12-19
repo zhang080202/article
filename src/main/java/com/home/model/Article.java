@@ -64,10 +64,33 @@ public class Article implements Serializable {
 	private Integer flag;
 	
 	private Integer praiseNum;
+	/**
+	 * 标志 是否可以在小程序中进行编辑，若在后台系统中编辑过内容 则无法在小程序中进行编辑 默认为1 可编辑
+	 */
+	private String isEdit;
 	
 	@TableField(exist = false)
 	private String username;
 	
+	@TableField(exist = false)
+	private String typeValue;
+	
+	public String getTypeValue() {
+		return typeValue;
+	}
+
+	public void setTypeValue(String typeValue) {
+		this.typeValue = typeValue;
+	}
+
+	public String getIsEdit() {
+		return isEdit;
+	}
+
+	public void setIsEdit(String isEdit) {
+		this.isEdit = isEdit;
+	}
+
 	public Integer getPraiseNum() {
 		return praiseNum;
 	}

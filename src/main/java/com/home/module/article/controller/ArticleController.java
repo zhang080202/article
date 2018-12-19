@@ -120,13 +120,14 @@ public class ArticleController {
 		return ResponseBean.succ(result);
 	}
 
-	@GetMapping("/v1/getArticlerById/{articleId}/{userId}")
+	@GetMapping("/v1/getArticlerById/{articleId}/{userId}/{isOpen}")
 	@ApiOperation("根据ID获取文章信息")
-	public ResponseBean getArticlerById(@PathVariable("articleId") String articleId, @PathVariable("userId") String userId) {
+	public ResponseBean getArticlerById(@PathVariable("articleId") String articleId, @PathVariable("userId") String userId,
+										@PathVariable("isOpen") Integer isOpen) {
 		Article article = null;
 		Map<String, Object> result = new HashMap<>();
 		try {
-			article = articleService.getArticlerById(articleId);
+			article = articleService.getArticlerById(articleId, isOpen);
 			int count = userPraiseService.count(new QueryWrapper<UserPraise>().eq("article_id", articleId)
 																  			  .eq("user_id", userId));
 			result.put("detail", article);
@@ -145,7 +146,8 @@ public class ArticleController {
 	public ResponseBean getArticleStatus(@PathVariable("articleId") String articleId) {
 		Article article = null;
 		try {
-			article = articleService.getArticlerById(articleId);
+			//传入1表示为后台调用 非公开访问 
+			article = articleService.getArticlerById(articleId, 0);
 			article.setContent(null);
 			article.setTitle(null);
 		} catch (Exception e) {
@@ -179,7 +181,7 @@ public class ArticleController {
 	public ResponseBean updateArticle(@RequestBody Article article) {
 		try {
 			ValidatorUtil.validatorModel(article);
-			articleService.updateById(article);
+			articleService.updateArticle(article);
 		} catch (ServiceException e) {
 			e.printStackTrace();
 			logger.error("修改文章数据错误  " + e);
@@ -224,6 +226,19 @@ public class ArticleController {
 			@PathVariable("userId") String userId) {
 		try {
 			articleService.deleteArticle(articleId, userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("删除文章接口异常 : " + e);
+			return ResponseBean.fail(e.getMessage());
+		}
+		return ResponseBean.succ();
+	}
+	
+	@GetMapping("/v1/deleteArticle/{articleId}")
+	@ApiOperation("删除文章")
+	public ResponseBean deleteArticle(@PathVariable("articleId") String articleId) {
+		try {
+			articleService.removeById(articleId);
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.error("删除文章接口异常 : " + e);
