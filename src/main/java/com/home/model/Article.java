@@ -27,7 +27,7 @@ public class Article implements Serializable {
 	@TableId
 	private String articleId;
 	
-	@NotNull(message = "文章标题不能为空")
+	@NotNull(message = "文章類型不能为空")
 	private Integer articleType;
 	
 	@NotBlank(message = "文章内容不能为空")

@@ -26,7 +26,6 @@ import com.home.model.ResponseBean;
 import com.home.model.UserPraise;
 import com.home.module.article.service.IArticleService;
 import com.home.module.praise.service.IUserPraiseService;
-import com.home.module.praise.service.impl.UserPraiseServiceImpl;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -58,7 +57,8 @@ public class ArticleController {
 	@GetMapping("/v1/getArticlerListAll/{page}/{pageSize}/{params}")
 	@ApiOperation("获取所有文章列表信息")
 	public ResponseBean getArticlerListAll(@PathVariable("page") Integer page,
-			@PathVariable("pageSize") Integer pageSize, @PathVariable("params") String params) {
+										   @PathVariable("pageSize") Integer pageSize, 
+										   @PathVariable("params") String params) {
 		IPage<Map<String,Object>> result = null;
 		Map<String,Object> parse = (Map<String, Object>) JSON.parse(params);
 		try {
@@ -74,7 +74,7 @@ public class ArticleController {
 	@GetMapping("/v1/getArticlerList/{page}/{pageSize}")
 	@ApiOperation("获取文章列表信息")
 	public ResponseBean getArticlerList(@PathVariable("page") Integer page,
-			@PathVariable("pageSize") Integer pageSize) {
+										@PathVariable("pageSize") Integer pageSize) {
 		IPage<Article> result = null;
 		try {
 			result = articleService.getArticlerList(page, pageSize, false, null);
@@ -89,8 +89,9 @@ public class ArticleController {
 	@GetMapping("/v1/getArticlerListByUser/{page}/{pageSize}/{isPrivate}/{userId}")
 	@ApiOperation("获取用户的文章列表信息")
 	public ResponseBean getArticlerListByUser(@PathVariable("page") Integer page,
-			@PathVariable("pageSize") Integer pageSize, @PathVariable("isPrivate") Boolean isPrivate,
-			@PathVariable("userId") String userId) {
+											  @PathVariable("pageSize") Integer pageSize, 
+											  @PathVariable("isPrivate") Boolean isPrivate,
+											  @PathVariable("userId") String userId) {
 		IPage<Article> result = null;
 		try {
 			result = articleService.getArticlerList(page, pageSize, isPrivate, userId);

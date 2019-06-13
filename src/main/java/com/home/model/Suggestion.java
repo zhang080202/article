@@ -3,8 +3,12 @@ package com.home.model;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotBlank;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * <p>
@@ -23,6 +27,11 @@ public class Suggestion implements Serializable {
 	private String suggestionId;
 
 	/**
+	 * 用户ID
+	 */
+	private String userId;
+
+	/**
 	 * 标题
 	 */
 	private String title;
@@ -30,11 +39,13 @@ public class Suggestion implements Serializable {
 	/**
 	 * 内容
 	 */
+	@NotBlank(message = "内容不能为空")
 	private String content;
 
 	/**
 	 * 创建时间
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime createTime;
 
 	/**
@@ -42,10 +53,35 @@ public class Suggestion implements Serializable {
 	 */
 	private Integer status;
 
-	/**
-	 * 反馈图片
-	 */
-	private String image;
+	@TableField(exist = false)
+	private String statusValue;
+
+	@TableField(exist = false)
+	private String userName;
+
+	public String getStatusValue() {
+		return statusValue;
+	}
+
+	public void setStatusValue(String statusValue) {
+		this.statusValue = statusValue;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 
 	public String getSuggestionId() {
 		return suggestionId;
@@ -85,14 +121,6 @@ public class Suggestion implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
-	}
-
-	public String getImage() {
-		return image;
-	}
-
-	public void setImage(String image) {
-		this.image = image;
 	}
 
 }

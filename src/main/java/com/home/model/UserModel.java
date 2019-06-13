@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @TableName("sys_user")
 public class UserModel {
@@ -25,7 +26,8 @@ public class UserModel {
 	private LocalDate		birthday;
 
 	private Integer			gender;
-
+	
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime	lastDate;
 
 	private Integer			loginNum;
