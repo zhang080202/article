@@ -21,9 +21,9 @@ spring:
 
 ### 系统参数配置 ###
 article:
-  appid: wxfa3012c3a5846e0c
-  secret: 0d0d106b6b1ecec92ee8b43f436b16aa 
-  AccessKeyId: LTAIsWtUWWrnS4ly
-  AccessKeySecret: SAR5AnKKf20JtOluvQfA4NzLMlfVhs 
-  endpoint: oss-cn-beijing.aliyuncs.com  
-  bucketName: articleshare
+  appid: 
+  secret: 
+  AccessKeyId: 
+  AccessKeySecret: 
+  endpoint: 
+  bucketName: 
