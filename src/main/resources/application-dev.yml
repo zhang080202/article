@@ -20,10 +20,3 @@ spring:
     poolPreparedStatements: true
 
 ### 系统参数配置 ###
-article:
-  appid: 
-  secret: 
-  AccessKeyId: 
-  AccessKeySecret: 
-  endpoint: 
-  bucketName: 
